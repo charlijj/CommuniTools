@@ -29,7 +29,7 @@
 
 <h2>ER Diagram:</h2>
 
-&lt;img src=""&gt;
+<img src="https://github.com/charlijj/CommuniTools/blob/main/communiTools_ER.jpg">;
 
 <h2>Schema:</h2>
 
