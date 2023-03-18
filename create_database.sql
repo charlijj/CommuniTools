@@ -22,7 +22,8 @@ CREATE TABLE Communities (
 CREATE TABLE Members (
     memberID CHAR(5) PRIMARY KEY,
     comID CHAR(5) REFERENCES Communities,
-    memberName VARCHAR(256),
+    firstName VARCHAR(256),
+    lastName VARCHAR(256),
     address VARCHAR(256),
     email VARCHAR(256),
     phone VARCHAR(11)
@@ -44,7 +45,7 @@ CREATE TABLE Tools (
     catID CHAR(5) REFERENCES Categories,
     memberID CHAR(5) REFERENCES Members,
     toolName VARCHAR(256),
-    borrowStatus NUMBER(1, 0),
+    borrowStatus NUMBER(1, 0) DEFAULT 0,
     condition VARCHAR(32)
 );
 

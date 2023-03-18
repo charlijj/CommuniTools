@@ -18,9 +18,11 @@ int main()
       cmd = toupper(cmd);
       if (cmd == 'Q')
       {
+        CT.lineBreak();
         cout << "Quitting, BYE" << endl;
         break;
       }
+      CT.lineBreak();
       CT.getOption(cmd);
 
     } while (!quit);
