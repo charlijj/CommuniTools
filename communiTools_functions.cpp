@@ -33,9 +33,22 @@ void CommuniTools::printMenu()
     cout << "Q: to quit program." << endl;
 }
 
-void CommuniTools::printCommunityIDs()
+void CommuniTools::printCommunitys()
 {
-    cout << "All of the community names" << endl;
+    string statement;
+    Statement *stmt;
+    ResultSet *rs;
+
+    cout << "All communities: " << endl;
+
+    statement = "SELECT comName, comID FROM Communities";
+    stmt = DB.conn->createStatement(statement);
+    rs = stmt->executeQuery();
+    while (rs->next())
+    {
+        cout << "Community Name: " << rs->getString(1) << "\nCommunity ID: " << rs->getString(2) << endl<<endl;
+    }
+    stmt->closeResultSet(rs);
 }
 
 void CommuniTools::printCategories()
@@ -150,6 +163,9 @@ bool CommuniTools::verifyLogIn(string user, string pass)
 bool CommuniTools::addMember()
 {
     string statement;
+    Statement *stmt;
+    ResultSet *rs;
+
     string referralMember;
     string firstName;
     string lastName;
@@ -166,24 +182,52 @@ bool CommuniTools::addMember()
     cout << "Enter member ID of referral member: " << endl;
     getline(cin, referralMember);
 
-    statement = "SELECT memberID FROM Members WHERE memberID = :1";
-
+    statement = "SELECT memberID FROM CommunityMembers WHERE memberID = :1";
+    stmt = DB.conn->createStatement(statement);
+    stmt->setString(1, referralMember);
+    rs = stmt->executeQuery();
     
+    if (!rs->next())
+    {
+        cout << "No member with ID " << referralMember << " exists." << endl;
+        return false;
+    }
+    stmt->closeResultSet(rs);
+
+
     cout << "Enter fist name: " << endl;
     getline(cin, firstName);
 
     cout << "Enter last name: " << endl;
     getline(cin, lastName);
 
-    statement = "SELECT memberID FROM Members WHERE firstName = :1 AND lastName = :2";
+    statement = "SELECT memberID FROM CommunityMembers WHERE firstName = :1 AND lastName = :2";
+    stmt = DB.conn->createStatement(statement);
+    stmt->setString(1, firstName);
+    stmt->setString(2, lastName);
+    rs = stmt->executeQuery();
+    if (rs->next())
+    {
+        cout << firstName << " " << lastName << " is already a member." << endl;
+        return false;
+    }
+    stmt->closeResultSet(rs);
 
 
-    printCommunityIDs();
+    printCommunitys();
     cout << "Enter community ID: " << endl;
     getline(cin, communityID);
 
     statement = "SELECT comID FROM Communities WHERE comID = :1";
-
+    stmt = DB.conn->createStatement(statement);
+    stmt->setString(1, communityID);
+    rs = stmt->executeQuery();
+    if (!rs->next())
+    {
+        cout << "No community with ID " << communityID << " exists." << endl;
+        return false;
+    }
+    stmt->closeResultSet(rs);
 
 
     cout << "Enter address: " << endl;
@@ -195,18 +239,26 @@ bool CommuniTools::addMember()
     cout << "Enter phone: " << endl;
     getline(cin, phone);
 
-    statement = "INSERT INTO Members (comID, firstName, lastName, address, email, phone)"
-        " VALUES (:1, :2, :3, :4, :5, :6)";
+    statement = "INSERT INTO CommunityMembers (memberID, comID, firstName, lastName, address, email, phone)"
+        " VALUES (:1, :2, :3, :4, :5, :6, :7)";
+    stmt = DB.conn->createStatement(statement);
+    stmt->setString(1, "99999");
+    stmt->setString(2, communityID);
+    stmt->setString(3, firstName);
+    stmt->setString(4, lastName);
+    stmt->setString(5, address);
+    stmt->setString(6, email);
+    stmt->setString(7, phone);
+    int rowsUpdated = stmt->executeUpdate();
 
-    try
+    if (rowsUpdated == 1) // if update was successful, commit changes 
     {
-        cout << "New member successfully added!" << endl;
-        return true;
+        cout << "Added member " << firstName << " " << lastName << " successfully" << endl;
+        DB.conn->commit();
     }
-    catch(exception& e)
+    else
     {
-        std::cerr << e.what() << endl;
-        return false;
+        cerr << "Error: Failed to update record" << endl;
     }
 }
 
@@ -230,7 +282,7 @@ bool CommuniTools::addTool()
     cout << "Enter tool name: " << endl;
     getline(cin, name);
 
-    printCommunityIDs();
+    printCommunitys();
     cout << "Enter tool condition: " << endl;
     getline(cin, condition);
 
@@ -288,11 +340,23 @@ bool CommuniTools::removeTool()
 
 Database::Database()
 {
+    try
+    {
+        env = Environment::createEnvironment();
+        conn = env->createConnection(userName, password, connectString);
 
+        cout << "----------Database connection succsessfull----------" << endl<<endl;
+    }
+    catch (SQLException &e)
+    {
+        cout << e.what();
+    }
 };
+
 Database::~Database()
 {
-
+    env->terminateConnection(conn);
+    Environment::terminateEnvironment(env);
 };
 
 
