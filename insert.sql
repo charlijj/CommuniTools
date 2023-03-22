@@ -316,3 +316,5 @@ VALUES (20, 8, TO_DATE('2023-01-09', 'YYYY-MM-DD'), TO_DATE('2023-01-19', 'YYYY-
 INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
 VALUES (4, 2, TO_DATE('2023-02-02', 'YYYY-MM-DD'), TO_DATE('2023-02-09', 'YYYY-MM-DD'));
 -----------------------------------------------------------------------------
+
+commit;
