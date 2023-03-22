@@ -57,60 +57,90 @@ CREATE TABLE BorrowRecord (
     returnDate DATE
 );
 
-CREATE SEQUENCE id_seq
+-- Create sequence to generate IDs for Communities table
+CREATE SEQUENCE comID_seq
   START WITH 1
   INCREMENT BY 1;
 
-
--- Create trigger to generate IDs for all tables
-
-CREATE OR REPLACE TRIGGER trg_id_seq
+-- Create trigger to generate IDs for Communities table
+CREATE OR REPLACE TRIGGER trg_Communities
 BEFORE INSERT ON Communities
 FOR EACH ROW
 BEGIN
-  :NEW.comID := id_seq.NEXTVAL;
+  :NEW.comID := comID_seq.NEXTVAL;
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_id_seq
+-- Create sequence to generate IDs for CommunityMembers table
+CREATE SEQUENCE memberID_seq
+  START WITH 1
+  INCREMENT BY 1;
+
+-- Create trigger to generate IDs for CommunityMembers table
+CREATE OR REPLACE TRIGGER trg_CommunityMembers
 BEFORE INSERT ON CommunityMembers
 FOR EACH ROW
 BEGIN
-  :NEW.memberID := id_seq.NEXTVAL;
+  :NEW.memberID := memberID_seq.NEXTVAL;
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_id_seq
+-- Create sequence to generate IDs for Borrowers table
+CREATE SEQUENCE borrowerID_seq
+  START WITH 1
+  INCREMENT BY 1;
+
+-- Create trigger to generate IDs for Borrowers table
+CREATE OR REPLACE TRIGGER trg_Borrowers
 BEFORE INSERT ON Borrowers
 FOR EACH ROW
 BEGIN
-  :NEW.memberID := id_seq.NEXTVAL;
+  :NEW.memberID := borrowerID_seq.NEXTVAL;
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_id_seq
+-- Create sequence to generate IDs for ToolCategories table
+CREATE SEQUENCE catID_seq
+  START WITH 1
+  INCREMENT BY 1;
+
+-- Create trigger to generate IDs for ToolCategories table
+CREATE OR REPLACE TRIGGER trg_ToolCategories
 BEFORE INSERT ON ToolCategories
 FOR EACH ROW
 BEGIN
-  :NEW.catID := id_seq.NEXTVAL;
+  :NEW.catID := catID_seq.NEXTVAL;
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_id_seq
+-- Create sequence to generate IDs for CommunityTools table
+CREATE SEQUENCE toolID_seq
+  START WITH 1
+  INCREMENT BY 1;
+
+-- Create trigger to generate IDs for CommunityTools table
+CREATE OR REPLACE TRIGGER trg_CommunityTools
 BEFORE INSERT ON CommunityTools
 FOR EACH ROW
 BEGIN
-  :NEW.toolID := id_seq.NEXTVAL;
+  :NEW.toolID := toolID_seq.NEXTVAL;
 END;
 /
 
-CREATE OR REPLACE TRIGGER trg_id_seq
+-- Create sequence to generate IDs for BorrowRecord table
+CREATE SEQUENCE recordID_seq
+  START WITH 1
+  INCREMENT BY 1;
+
+-- Create trigger to generate IDs for BorrowRecord table
+CREATE OR REPLACE TRIGGER trg_BorrowRecord
 BEFORE INSERT ON BorrowRecord
 FOR EACH ROW
 BEGIN
-  :NEW.recordID := id_seq.NEXTVAL;
+  :NEW.recordID := recordID_seq.NEXTVAL;
 END;
 /
+
 
 -- describe Communities;
 -- describe CommunityMembers;
