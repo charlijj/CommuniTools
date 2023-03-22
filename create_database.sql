@@ -57,8 +57,8 @@ CREATE TABLE BorrowRecord (
     returnDate DATE
 );
 
--- Create sequence to generate IDs for Communities table
-CREATE SEQUENCE comID_seq
+-- CREATE OR REPLACE SEQUENCE to generate IDs for Communities table
+CREATE OR REPLACE SEQUENCE comID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -71,8 +71,8 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for CommunityMembers table
-CREATE SEQUENCE memberID_seq
+-- CREATE OR REPLACE SEQUENCE to generate IDs for CommunityMembers table
+CREATE OR REPLACE SEQUENCE memberID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -85,8 +85,8 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for Borrowers table
-CREATE SEQUENCE borrowerID_seq
+-- CREATE OR REPLACE SEQUENCE to generate IDs for Borrowers table
+CREATE OR REPLACE SEQUENCE borrowerID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -99,8 +99,8 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for ToolCategories table
-CREATE SEQUENCE catID_seq
+-- CREATE OR REPLACE SEQUENCE to generate IDs for ToolCategories table
+CREATE OR REPLACE SEQUENCE catID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -113,8 +113,8 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for CommunityTools table
-CREATE SEQUENCE toolID_seq
+-- CREATE OR REPLACE SEQUENCE to generate IDs for CommunityTools table
+CREATE OR REPLACE SEQUENCE toolID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -127,8 +127,8 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for BorrowRecord table
-CREATE SEQUENCE recordID_seq
+-- CREATE OR REPLACE SEQUENCE to generate IDs for BorrowRecord table
+CREATE OR REPLACE SEQUENCE recordID_seq
   START WITH 1
   INCREMENT BY 1;
 
