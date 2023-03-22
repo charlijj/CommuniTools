@@ -24,11 +24,11 @@ DROP TRIGGER trg_BorrowRecords;
 DROP SEQUENCE recordID_seq;
 
 DROP TABLE BorrowRecords;
+DROP TABLE CommunityTools;
+DROP TABLE ToolCategories;
 DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
-DROP TABLE CommunityTools;
-DROP TABLE ToolCategories;
 
 CREATE TABLE Communities (
     comID NUMBER(5) PRIMARY KEY ,
