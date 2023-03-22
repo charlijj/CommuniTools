@@ -11,9 +11,6 @@ DROP SEQUENCE comID_seq;
 DROP TRIGGER trg_CommunityMembers;
 DROP SEQUENCE memberID_seq;
 
-DROP TRIGGER trg_Borrowers;
-DROP SEQUENCE borrowerID_seq;
-
 DROP TRIGGER trg_ToolCategories;
 DROP SEQUENCE catID_seq;
 
@@ -75,89 +72,75 @@ CREATE TABLE BorrowRecords (
     returnDate DATE
 );
 
--- Create sequence to generate IDs for Communities table
-CREATE SEQUENCE comID_seq
-  START WITH 1
-  INCREMENT BY 1;
+-- -- Create sequence to generate IDs for Communities table
+-- CREATE SEQUENCE comID_seq
+--   START WITH 1
+--   INCREMENT BY 1;
 
--- Create trigger to generate IDs for Communities table
-CREATE OR REPLACE TRIGGER trg_Communities
-BEFORE INSERT ON Communities
-FOR EACH ROW
-BEGIN
-  :NEW.comID := comID_seq.NEXTVAL;
-END;
-/
+-- -- Create trigger to generate IDs for Communities table
+-- CREATE OR REPLACE TRIGGER trg_Communities
+-- BEFORE INSERT ON Communities
+-- FOR EACH ROW
+-- BEGIN
+--   :NEW.comID := comID_seq.NEXTVAL;
+-- END;
+-- /
 
--- Create sequence to generate IDs for CommunityMembers table
-CREATE SEQUENCE memberID_seq
-  START WITH 1
-  INCREMENT BY 1;
+-- -- Create sequence to generate IDs for CommunityMembers table
+-- CREATE SEQUENCE memberID_seq
+--   START WITH 1
+--   INCREMENT BY 1;
 
--- Create trigger to generate IDs for CommunityMembers table
-CREATE OR REPLACE TRIGGER trg_CommunityMembers
-BEFORE INSERT ON CommunityMembers
-FOR EACH ROW
-BEGIN
-  :NEW.memberID := memberID_seq.NEXTVAL;
-END;
-/
+-- -- Create trigger to generate IDs for CommunityMembers table
+-- CREATE OR REPLACE TRIGGER trg_CommunityMembers
+-- BEFORE INSERT ON CommunityMembers
+-- FOR EACH ROW
+-- BEGIN
+--   :NEW.memberID := memberID_seq.NEXTVAL;
+-- END;
+-- /
 
--- Create sequence to generate IDs for Borrowers table
-CREATE SEQUENCE borrowerID_seq
-  START WITH 1
-  INCREMENT BY 1;
+-- -- Create sequence to generate IDs for ToolCategories table
+-- CREATE SEQUENCE catID_seq
+--   START WITH 1
+--   INCREMENT BY 1;
 
--- Create trigger to generate IDs for Borrowers table
-CREATE OR REPLACE TRIGGER trg_Borrowers
-BEFORE INSERT ON Borrowers
-FOR EACH ROW
-BEGIN
-  :NEW.memberID := borrowerID_seq.NEXTVAL;
-END;
-/
+-- -- Create trigger to generate IDs for ToolCategories table
+-- CREATE OR REPLACE TRIGGER trg_ToolCategories
+-- BEFORE INSERT ON ToolCategories
+-- FOR EACH ROW
+-- BEGIN
+--   :NEW.catID := catID_seq.NEXTVAL;
+-- END;
+-- /
 
--- Create sequence to generate IDs for ToolCategories table
-CREATE SEQUENCE catID_seq
-  START WITH 1
-  INCREMENT BY 1;
+-- -- Create sequence to generate IDs for CommunityTools table
+-- CREATE SEQUENCE toolID_seq
+--   START WITH 1
+--   INCREMENT BY 1;
 
--- Create trigger to generate IDs for ToolCategories table
-CREATE OR REPLACE TRIGGER trg_ToolCategories
-BEFORE INSERT ON ToolCategories
-FOR EACH ROW
-BEGIN
-  :NEW.catID := catID_seq.NEXTVAL;
-END;
-/
+-- -- Create trigger to generate IDs for CommunityTools table
+-- CREATE OR REPLACE TRIGGER trg_CommunityTools
+-- BEFORE INSERT ON CommunityTools
+-- FOR EACH ROW
+-- BEGIN
+--   :NEW.toolID := toolID_seq.NEXTVAL;
+-- END;
+-- /
 
--- Create sequence to generate IDs for CommunityTools table
-CREATE SEQUENCE toolID_seq
-  START WITH 1
-  INCREMENT BY 1;
+-- -- Create sequence to generate IDs for BorrowRecords table
+-- CREATE SEQUENCE recordID_seq
+--   START WITH 1
+--   INCREMENT BY 1;
 
--- Create trigger to generate IDs for CommunityTools table
-CREATE OR REPLACE TRIGGER trg_CommunityTools
-BEFORE INSERT ON CommunityTools
-FOR EACH ROW
-BEGIN
-  :NEW.toolID := toolID_seq.NEXTVAL;
-END;
-/
-
--- Create sequence to generate IDs for BorrowRecords table
-CREATE SEQUENCE recordID_seq
-  START WITH 1
-  INCREMENT BY 1;
-
--- Create trigger to generate IDs for BorrowRecords table
-CREATE OR REPLACE TRIGGER trg_BorrowRecords
-BEFORE INSERT ON BorrowRecords
-FOR EACH ROW
-BEGIN
-  :NEW.recordID := recordID_seq.NEXTVAL;
-END;
-/
+-- -- Create trigger to generate IDs for BorrowRecords table
+-- CREATE OR REPLACE TRIGGER trg_BorrowRecords
+-- BEFORE INSERT ON BorrowRecords
+-- FOR EACH ROW
+-- BEGIN
+--   :NEW.recordID := recordID_seq.NEXTVAL;
+-- END;
+-- /
 
 -- describe Communities;
 -- describe CommunityMembers;
