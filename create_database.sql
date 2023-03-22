@@ -12,10 +12,6 @@ DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
 
-CREATE SEQUENCE id_seq
-  START WITH 1
-  INCREMENT BY 1;
-
 CREATE TABLE Communities (
     comID NUMBER(5) PRIMARY KEY ,
     comName VARCHAR(256),
@@ -25,7 +21,7 @@ CREATE TABLE Communities (
 
 CREATE TABLE CommunityMembers (
     memberID NUMBER(5) PRIMARY KEY,
-    comID CHAR(5) REFERENCES Communities,
+    comID NUMBER(5) REFERENCES Communities,
     firstName VARCHAR(256),
     lastName VARCHAR(256),
     address VARCHAR(256),
