@@ -238,16 +238,15 @@ bool CommuniTools::addMember()
     cout << "Enter phone: " << endl;
     getline(cin, phone);
 
-    statement = "INSERT INTO CommunityMembers (memberID, comID, firstName, lastName, address, email, phone)"
-        " VALUES (:1, :2, :3, :4, :5, :6, :7)";
+    statement = "INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)"
+        " VALUES (:1, :2, :3, :4, :5, :6";
     stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, "88888");
-    stmt->setString(2, communityID);
-    stmt->setString(3, firstName);
-    stmt->setString(4, lastName);
-    stmt->setString(5, address);
-    stmt->setString(6, email);
-    stmt->setString(7, phone);
+    stmt->setString(1, communityID);
+    stmt->setString(2, firstName);
+    stmt->setString(3, lastName);
+    stmt->setString(4, address);
+    stmt->setString(5, email);
+    stmt->setString(6, phone);
     int rowsUpdated = stmt->executeUpdate();
 
     if (rowsUpdated == 1) // if update was successful, commit changes 
