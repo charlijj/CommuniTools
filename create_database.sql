@@ -7,10 +7,10 @@
 
 DROP TABLE BorrowRecords;
 DROP TABLE Borrowers;
-DROP TABLE CommunityTools;
-DROP TABLE ToolCategories;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
+DROP TABLE CommunityTools;
+DROP TABLE ToolCategories;
 
 DROP SEQUENCE comID_seq;
 DROP SEQUENCE memberID_seq;
