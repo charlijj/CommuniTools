@@ -282,13 +282,11 @@ bool CommuniTools::addTool()
     cout << "Enter tool name: " << endl;
     getline(cin, name);
 
-    printCommunitys();
     cout << "Enter tool condition: " << endl;
     getline(cin, condition);
 
     statement = "INSERT INTO Tools (catID, toolName, condition)"
         " VALUES (:1, :2, :3)";
-
 
     try
     {
