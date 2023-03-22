@@ -12,17 +12,19 @@ DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
 
-CREATE SEQUENCE id_seq START WITH 1 INCREMENT BY 1;
+CREATE SEQUENCE id_seq
+  START WITH 1
+  INCREMENT BY 1;
 
 CREATE TABLE Communities (
-    comID CHAR(5) PRIMARY KEY ,
+    comID NUMBER(5) PRIMARY KEY ,
     comName VARCHAR(256),
     comLocation VARCHAR(256),
     comSize NUMBER (8, 0)
 );
 
 CREATE TABLE CommunityMembers (
-    memberID CHAR(5) DEFAULT 'C'||LPAD(id_seq.NEXTVAL,3,'0') PRIMARY KEY,
+    memberID NUMBER(5) PRIMARY KEY,
     comID CHAR(5) REFERENCES Communities,
     firstName VARCHAR(256),
     lastName VARCHAR(256),
@@ -32,32 +34,87 @@ CREATE TABLE CommunityMembers (
 );
 
 CREATE TABLE Borrowers (
-    memberID CHAR(5) PRIMARY KEY REFERENCES CommunityMembers,
+    memberID NUMBER(5) PRIMARY KEY REFERENCES CommunityMembers,
     numToolsBorrowing NUMBER(1, 0)
 );
 
 CREATE TABLE ToolCategories (
-    catID CHAR(5) PRIMARY KEY,
+    catID NUMBER(5) PRIMARY KEY,
     catName VARCHAR(256),
     catDescription VARCHAR(256)
 );
 
 CREATE TABLE CommunityTools (
-    toolID CHAR(5) PRIMARY KEY,
-    catID CHAR(5) REFERENCES ToolCategories,
-    memberID CHAR(5) REFERENCES CommunityMembers,
+    toolID NUMBER(5) PRIMARY KEY,
+    catID NUMBER(5) REFERENCES ToolCategories,
+    memberID NUMBER(5) REFERENCES CommunityMembers,
     toolName VARCHAR(256),
     borrowStatus NUMBER(1, 0) DEFAULT 0,
     condition VARCHAR(32)
 );
 
 CREATE TABLE BorrowRecord (
-    recordID CHAR(5) PRIMARY KEY,
-    memberID CHAR(5) REFERENCES CommunityMembers,
-    toolID CHAR(5) REFERENCES CommunityTools,
+    recordID NUMBER(5) PRIMARY KEY,
+    memberID NUMBER(5) REFERENCES CommunityMembers,
+    toolID NUMBER(5) REFERENCES CommunityTools,
     rentDate DATE,
     returnDate DATE
 );
+
+CREATE SEQUENCE id_seq
+  START WITH 1
+  INCREMENT BY 1;
+
+
+-- Create trigger to generate IDs for all tables
+
+CREATE OR REPLACE TRIGGER trg_id_seq
+BEFORE INSERT ON Communities
+FOR EACH ROW
+BEGIN
+  :NEW.comID := id_seq.NEXTVAL;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_id_seq
+BEFORE INSERT ON CommunityMembers
+FOR EACH ROW
+BEGIN
+  :NEW.memberID := id_seq.NEXTVAL;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_id_seq
+BEFORE INSERT ON Borrowers
+FOR EACH ROW
+BEGIN
+  :NEW.memberID := id_seq.NEXTVAL;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_id_seq
+BEFORE INSERT ON ToolCategories
+FOR EACH ROW
+BEGIN
+  :NEW.catID := id_seq.NEXTVAL;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_id_seq
+BEFORE INSERT ON CommunityTools
+FOR EACH ROW
+BEGIN
+  :NEW.toolID := id_seq.NEXTVAL;
+END;
+/
+
+CREATE OR REPLACE TRIGGER trg_id_seq
+BEFORE INSERT ON BorrowRecord
+FOR EACH ROW
+BEGIN
+  :NEW.recordID := id_seq.NEXTVAL;
+END;
+/
 
 -- describe Communities;
 -- describe CommunityMembers;
