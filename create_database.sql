@@ -5,12 +5,13 @@
 -- -- Tools (toolID, catID, memberID, toolName, borrowStatus, condition
 -- -- BorrowRecords (recordID, memberID, toolID, rentDate, returnDate)
 
-ALTER TABLE CommunityMembers DISABLE CONSTRAINT CommunityMembers_comID_fk;
-ALTER TABLE Borrowers DISABLE CONSTRAINT Borrowers_memberID_fk;
-ALTER TABLE CommunityTools DISABLE CONSTRAINT CommunityTools_catID_fk;
-ALTER TABLE CommunityTools DISABLE CONSTRAINT CommunityTools_memberID_fk;
-ALTER TABLE BorrowRecords DISABLE CONSTRAINT BorrowRecords_memberID_fk;
-ALTER TABLE BorrowRecords DISABLE CONSTRAINT BorrowRecords_toolID_fk;
+ALTER TABLE Communities DISABLE CONSTRAINT ALL;
+ALTER TABLE CommunityMembers DISABLE CONSTRAINT ALL;
+ALTER TABLE Borrowers DISABLE CONSTRAINT ALL;
+ALTER TABLE ToolCategories DISABLE CONSTRAINT ALL;
+ALTER TABLE CommunityTools DISABLE CONSTRAINT ALL;
+ALTER TABLE BorrowRecords DISABLE CONSTRAINT ALL;
+
 
 DROP TABLE BorrowRecords;
 DROP TABLE Borrowers;
@@ -25,13 +26,6 @@ DROP SEQUENCE borrowerID_seq;
 DROP SEQUENCE catID_seq;
 DROP SEQUENCE toolID_seq;
 DROP SEQUENCE recordID_seq;
-
-ALTER TABLE CommunityMembers ENABLE CONSTRAINT CommunityMembers_comID_fk;
-ALTER TABLE Borrowers ENABLE CONSTRAINT Borrowers_memberID_fk;
-ALTER TABLE CommunityTools ENABLE CONSTRAINT CommunityTools_catID_fk;
-ALTER TABLE CommunityTools ENABLE CONSTRAINT CommunityTools_memberID_fk;
-ALTER TABLE BorrowRecords ENABLE CONSTRAINT BorrowRecords_memberID_fk;
-ALTER TABLE BorrowRecords ENABLE CONSTRAINT BorrowRecords_toolID_fk;
 
 
 CREATE TABLE Communities (
