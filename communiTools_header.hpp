@@ -43,7 +43,7 @@ class CommuniTools
     ~CommuniTools();
     
     void printMenu();
-    void printCommunitys();
+    void printCommunities();
     void printCategories();
     bool logIn();
     void getOption(char cmd);

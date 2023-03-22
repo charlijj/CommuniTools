@@ -12,6 +12,7 @@ DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
 
+CREATE SEQUENCE id_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE Communities (
     comID CHAR(5) PRIMARY KEY ,
@@ -21,7 +22,7 @@ CREATE TABLE Communities (
 );
 
 CREATE TABLE CommunityMembers (
-    memberID CHAR(5) PRIMARY KEY,
+    memberID CHAR(5) DEFAULT 'C'||LPAD(community_members_seq.NEXTVAL,3,'0') PRIMARY KEY,
     comID CHAR(5) REFERENCES Communities,
     firstName VARCHAR(256),
     lastName VARCHAR(256),

@@ -33,7 +33,7 @@ void CommuniTools::printMenu()
     cout << "Q: to quit program." << endl;
 }
 
-void CommuniTools::printCommunitys()
+void CommuniTools::printCommunities()
 {
     string statement;
     Statement *stmt;
@@ -213,8 +213,7 @@ bool CommuniTools::addMember()
     }
     stmt->closeResultSet(rs);
 
-
-    printCommunitys();
+    printCommunities();
     cout << "Enter community ID: " << endl;
     getline(cin, communityID);
 
@@ -242,7 +241,7 @@ bool CommuniTools::addMember()
     statement = "INSERT INTO CommunityMembers (memberID, comID, firstName, lastName, address, email, phone)"
         " VALUES (:1, :2, :3, :4, :5, :6, :7)";
     stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, "99999");
+    stmt->setString(1, "88888");
     stmt->setString(2, communityID);
     stmt->setString(3, firstName);
     stmt->setString(4, lastName);
@@ -260,6 +259,7 @@ bool CommuniTools::addMember()
     {
         cerr << "Error: Failed to update record" << endl;
     }
+    DB.conn->terminateStatement(stmt);
 }
 
 bool CommuniTools::addTool()
