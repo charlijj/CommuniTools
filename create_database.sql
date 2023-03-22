@@ -5,14 +5,6 @@
 -- -- Tools (toolID, catID, memberID, toolName, borrowStatus, condition
 -- -- BorrowRecords (recordID, memberID, toolID, rentDate, returnDate)
 
-ALTER TABLE Communities DISABLE CONSTRAINT ALL;
-ALTER TABLE CommunityMembers DISABLE CONSTRAINT ALL;
-ALTER TABLE Borrowers DISABLE CONSTRAINT ALL;
-ALTER TABLE ToolCategories DISABLE CONSTRAINT ALL;
-ALTER TABLE CommunityTools DISABLE CONSTRAINT ALL;
-ALTER TABLE BorrowRecords DISABLE CONSTRAINT ALL;
-
-
 DROP TABLE BorrowRecords;
 DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
