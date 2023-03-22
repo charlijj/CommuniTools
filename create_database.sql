@@ -118,15 +118,15 @@ END;
 -- describe ToolCategories;
 -- describe BorrowRecord;
 
-INSERT INTO Communities (comID, comName, comLocation, comSize) VALUES ('00001', 'Old City Quarter', 'Nanaimo BC', 2000);
-INSERT INTO Communities (comID, comName, comLocation, comSize) VALUES ('00002', 'University Village', 'Nanaimo BC', 1200);
-INSERT INTO Communities (comID, comName, comLocation, comSize) VALUES ('00003', 'Westwood Lake', 'Nanaimo BC', 1000);
+INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Old City Quarter', 'Nanaimo BC', 2000);
+INSERT INTO Communities (comName, comLocation, comSize) VALUES ('University Village', 'Nanaimo BC', 1200);
+INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Westwood Lake', 'Nanaimo BC', 1000);
 
-INSERT INTO CommunityMembers (memberID, comID, firstName, lastName, address, email, phone) 
-VALUES ('00001', '00001', 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222');
-INSERT INTO CommunityMembers (memberID, comID, firstName, lastName, address, email, phone) 
-VALUES ('00002', '00001', 'Mary', 'Loop', '44 Mega St, Nanaimo BC', 'mail@mail.com', '250-555-4444');
-INSERT INTO CommunityMembers (memberID, comID, firstName, lastName, address, email, phone) 
-VALUES ('00003', '00003', 'Jhon', 'Bee', '89 Last St, Nanaimo BC', 'mail@mail.com', '250-999-2222');
+-- INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
+-- VALUES ('00001', 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222');
+-- INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
+-- VALUES ('00001', 'Mary', 'Loop', '44 Mega St, Nanaimo BC', 'mail@mail.com', '250-555-4444');
+-- INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
+-- VALUES ('00003', 'Jhon', 'Bee', '89 Last St, Nanaimo BC', 'mail@mail.com', '250-999-2222');
 
 commit;
