@@ -6,9 +6,9 @@
 -- -- BorrowRecords (recordID, memberID, toolID, rentDate, returnDate)
 
 DROP TABLE BorrowRecords;
+DROP TABLE Borrowers;
 DROP TABLE CommunityTools;
 DROP TABLE ToolCategories;
-DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
 
