@@ -22,7 +22,7 @@ CREATE TABLE Communities (
 );
 
 CREATE TABLE CommunityMembers (
-    memberID CHAR(5) DEFAULT 'C'||LPAD(community_members_seq.NEXTVAL,3,'0') PRIMARY KEY,
+    memberID CHAR(5) DEFAULT 'C'||LPAD(id_seq.NEXTVAL,3,'0') PRIMARY KEY,
     comID CHAR(5) REFERENCES Communities,
     firstName VARCHAR(256),
     lastName VARCHAR(256),
