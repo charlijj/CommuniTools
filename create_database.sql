@@ -12,13 +12,23 @@ DROP TABLE Communities;
 DROP TABLE CommunityTools;
 DROP TABLE ToolCategories;
 
+DROP TRIGGER trg_Communities;
 DROP SEQUENCE comID_seq;
-DROP SEQUENCE memberID_seq;
-DROP SEQUENCE borrowerID_seq;
-DROP SEQUENCE catID_seq;
-DROP SEQUENCE toolID_seq;
-DROP SEQUENCE recordID_seq;
 
+DROP TRIGGER trg_CommunityMembers;
+DROP SEQUENCE memberID_seq;
+
+DROP TRIGGER trg_Borrowers;
+DROP SEQUENCE borrowerID_seq;
+
+DROP TRIGGER trg_ToolCategories;
+DROP SEQUENCE catID_seq;
+
+DROP TRIGGER trg_CommunityTools;
+DROP SEQUENCE toolID_seq;
+
+DROP TRIGGER trg_BorrowRecords;
+DROP SEQUENCE recordID_seq;
 
 CREATE TABLE Communities (
     comID NUMBER(5) PRIMARY KEY ,
