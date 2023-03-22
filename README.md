@@ -39,5 +39,5 @@
 <li>Borrowers (memberID, numToolsBorrowing)</li>
 <li>Tools (toolID, catID, memberID, toolName, borrowStatus, condition)</li>
 <li>Categories (catID, catName, catDescription)</li>
-<li>BorrowRecord (recordID, memberID, toolID, rentDate, returnDate)</li>
+<li>BorrowRecords (recordID, memberID, toolID, rentDate, returnDate)</li>
 </ul>
