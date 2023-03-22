@@ -12,6 +12,25 @@ DROP TABLE Borrowers;
 DROP TABLE CommunityMembers;
 DROP TABLE Communities;
 
+DROP TRIGGER trg_Communities;
+DROP SEQUENCE comID_seq;
+
+DROP TRIGGER trg_CommunityMembers;
+DROP SEQUENCE memberID_seq;
+
+DROP TRIGGER trg_Borrowers;
+DROP SEQUENCE borrowerID_seq;
+
+DROP TRIGGER trg_ToolCategories;
+DROP SEQUENCE catID_seq;
+
+DROP TRIGGER trg_CommunityTools;
+DROP SEQUENCE toolID_seq;
+
+DROP TRIGGER trg_BorrowRecord;
+DROP SEQUENCE recordID_seq;
+
+
 CREATE TABLE Communities (
     comID NUMBER(5) PRIMARY KEY ,
     comName VARCHAR(256),
@@ -57,8 +76,8 @@ CREATE TABLE BorrowRecord (
     returnDate DATE
 );
 
--- CREATE OR REPLACE SEQUENCE to generate IDs for Communities table
-CREATE OR REPLACE SEQUENCE comID_seq
+-- Create sequence to generate IDs for Communities table
+CREATE SEQUENCE comID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -71,8 +90,8 @@ BEGIN
 END;
 /
 
--- CREATE OR REPLACE SEQUENCE to generate IDs for CommunityMembers table
-CREATE OR REPLACE SEQUENCE memberID_seq
+-- Create sequence to generate IDs for CommunityMembers table
+CREATE SEQUENCE memberID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -85,8 +104,8 @@ BEGIN
 END;
 /
 
--- CREATE OR REPLACE SEQUENCE to generate IDs for Borrowers table
-CREATE OR REPLACE SEQUENCE borrowerID_seq
+-- Create sequence to generate IDs for Borrowers table
+CREATE SEQUENCE borrowerID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -99,8 +118,8 @@ BEGIN
 END;
 /
 
--- CREATE OR REPLACE SEQUENCE to generate IDs for ToolCategories table
-CREATE OR REPLACE SEQUENCE catID_seq
+-- Create sequence to generate IDs for ToolCategories table
+CREATE SEQUENCE catID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -113,8 +132,8 @@ BEGIN
 END;
 /
 
--- CREATE OR REPLACE SEQUENCE to generate IDs for CommunityTools table
-CREATE OR REPLACE SEQUENCE toolID_seq
+-- Create sequence to generate IDs for CommunityTools table
+CREATE SEQUENCE toolID_seq
   START WITH 1
   INCREMENT BY 1;
 
@@ -127,8 +146,8 @@ BEGIN
 END;
 /
 
--- CREATE OR REPLACE SEQUENCE to generate IDs for BorrowRecord table
-CREATE OR REPLACE SEQUENCE recordID_seq
+-- Create sequence to generate IDs for BorrowRecord table
+CREATE SEQUENCE recordID_seq
   START WITH 1
   INCREMENT BY 1;
 
