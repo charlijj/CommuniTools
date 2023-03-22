@@ -156,6 +156,7 @@ END;
 -- describe ToolCategories;
 -- describe BorrowRecord;
 
+-- Insert Communities ----------------------------------------------------
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Old City Quarter', 'Nanaimo BC', 2000);
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('University Village', 'Nanaimo BC', 1200);
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Westwood Lake', 'Nanaimo BC', 1000);
@@ -166,7 +167,8 @@ INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Hammond Bay', '
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Woodgrove', 'Nanaimo BC', 4000);
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Lantzville', 'Lantzville BC', 4000);
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Cedar', 'Cedar BC', 4000);
-
+-----------------------------------------------------------------------------
+-- Insert Members -----------------------------------------------------------
 INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
 VALUES (1, 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222');
 
@@ -277,6 +279,8 @@ VALUES (7, 'Padmé', 'Amidala', '202 Coruscant Blvd', 'padmeamidala@naboo.com', 
 
 INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
 VALUES (8, 'Emperor', 'Palpatine', '222 Imperial Palace', 'emperorpalpatine@sith.com', '012-345-6789');
+-----------------------------------------------------------------------------
+-- Insert Categories --------------------------------------------------------
 
 INSERT INTO ToolCategories (catName, catDescription) 
 VALUES ('Hand Tools', 'Tools powered by hand, not electricity or other external power sources.');
@@ -307,6 +311,129 @@ VALUES ('Electrical Tools', 'Tools used in electrical work, such as wire cutters
 
 INSERT INTO ToolCategories (catName, catDescription) 
 VALUES ('Painting Tools', 'Tools designed for painting tasks, such as paint brushes and rollers.');
+-----------------------------------------------------------------------------
+-- Insert Tools -------------------------------------------------------------
+
+-- Hand Tools
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (1, 1, 'Hammer', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (1, 2, 'Screwdriver Set', 0, 'Excellent condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (1, 3, 'Pliers', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (1, 4, 'Wrench Set', 0, 'Fair condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (1, 5, 'Hand Saw', 0, 'Good condition');
+
+-- Power Tools
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (2, 6, 'Power Drill', 0, 'Excellent condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (2, 7, 'Circular Saw', 0, 'Fair condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (2, 8, 'Jigsaw', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (2, 9, 'Angle Grinder', 0, 'Excellent condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (2, 10, 'Power Sander', 0, 'Fair condition');
+
+-- Gardening Tools
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (3, 11, 'Rake', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (3, 12, 'Hedge Trimmer', 0, 'Excellent condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (3, 13, 'Lawn Mower', 0, 'Fair condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (3, 14, 'Pruning Shears', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (3, 15, 'Garden Trowel', 0, 'Excellent condition');
+
+-- Woodworking Tools
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (4, 16, 'Chisel Set', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (4, 17, 'Hand Planer', 0, 'Excellent condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (4, 18, 'Woodworking Clamps', 0, 'Fair condition');
+
+-- Automotive Tools
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (5, 3, 'Pipe Wrench', 0, 'Like new');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (5, 5, 'Pliers', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (5, 6, 'Socket Set', 0, 'New');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (5, 11, 'Jump Starter', 0, 'Fair condition');
+
+-- Construction Tools
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (6, 2, 'Circular Saw', 0, 'Excellent condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (6, 8, 'Sledgehammer', 0, 'Like new');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (7, 10, 'Drill', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (7, 18, 'Sawzall', 0, 'Fair condition');
+
+-- Cleaning Tools
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (8, 7, 'Vacuum Cleaner', 0, 'Like new');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (8, 15, 'Broom', 0, 'Good condition');
+
+-- Electrical Tools
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (9, 1, 'Wire stripper', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (9, 2, 'Voltage tester', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (9, 3, 'Wire cutter', 0, 'Bad condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (9, 3, 'Multimeter', 0, 'Good condition');
+
+-- Painting Tools
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (10, 4, 'Paint brush set', 0, 'New');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (10, 5, 'Roller set', 0, 'Good condition');
+
+INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
+VALUES (10, 6, 'Paint sprayer', 0, 'Good condition');
+
+
 
 
 commit;
