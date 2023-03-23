@@ -367,7 +367,7 @@ void CommuniTools::showTools()
     cin >> catID;
 
     try{
-    if (!DB.validateID("ToolCategories", catID) || cin.fail() && catID != 0)
+    if ((!DB.validateID("ToolCategories", catID) || cin.fail()) && catID != 0)
     {
         cout << "Invalid tool category." << endl;
         return;
@@ -470,13 +470,11 @@ bool Database::validateID(string table, int ID)
     string statement;
     Statement *stmt;
     ResultSet *rs;
-    cout << table << ID << endl;
     statement = "SELECT COUNT(*) FROM " + table;
     stmt = conn->createStatement(statement);
     rs = stmt->executeQuery();
     if (!rs->next()) {return false;}
     numTuples = rs->getInt(1);
-    cout << numTuples << endl;
     if (ID < 1 || ID > numTuples)
     {
         return false;
