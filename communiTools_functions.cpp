@@ -359,7 +359,6 @@ void CommuniTools::showTools()
     Statement *stmt;
     ResultSet *rs;
 
-    int numCategories;
     int catID;
 
     cinClear();
@@ -381,7 +380,7 @@ void CommuniTools::showTools()
 
     statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
     stmt = DB.conn->createStatement(statement);
-    stmt.setString(1, comID);
+    stmt.setInt(1, comID);
     rs = stmt->executeQuery();
     while (rs->next())
     {
@@ -456,6 +455,7 @@ Database::~Database()
 
 bool Database::validateID(string table, int ID)
 {
+    int numCategories;
     string statement;
     Statement *stmt;
     ResultSet *rs;
