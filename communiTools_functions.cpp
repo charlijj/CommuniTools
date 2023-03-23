@@ -359,14 +359,14 @@ void CommuniTools::showTools()
     Statement *stmt;
     ResultSet *rs;
 
-    int catID;
+    int catID = 0;
 
     cinClear();
     printCategories();
-    cout << "Enter the category ID of what tools you want to see: ";
+    cout << "Enter the category ID of what tools you want to see, enter 0 for all tools: ";
     cin >> catID;
 
-    if (!DB.validateID("ToolCategories", catID) || cin.fail())
+    if (!DB.validateID("ToolCategories", catID) || cin.fail() && catID != 0)
     {
         cout << "Invalid tool category." << endl;
         return;
@@ -378,9 +378,14 @@ void CommuniTools::showTools()
     cout << left << setw(25) << "Tool" << setw(25) << "Owner" << setw(25) << "Community" << setw(20) << "Borrow Status" << setw(25) << "Condition" << endl;
     cout << left << setw(25) << "----" << setw(25) << "-----" << setw(25) << "---------" << setw(20) << "-------------" << setw(25) << "---------" << endl;
 
-    statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
+    if (catID == 0){
+        statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
+    }
+    else {
+        statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
+    }
     stmt = DB.conn->createStatement(statement);
-    stmt.setInt(1, comID);
+    stmt->setInt(1, comID);
     rs = stmt->executeQuery();
     while (rs->next())
     {
