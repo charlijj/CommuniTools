@@ -385,7 +385,7 @@ void CommuniTools::showTools()
         statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
     }
     stmt = DB.conn->createStatement(statement);
-    stmt->setInt(1, catID);
+    // stmt->setInt(1, catID);
     rs = stmt->executeQuery();
     while (rs->next())
     {
