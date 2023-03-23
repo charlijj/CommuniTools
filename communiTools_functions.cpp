@@ -460,19 +460,17 @@ Database::~Database()
 
 bool Database::validateID(string table, int ID)
 {
-    int numCategories;
+    int numTuples;
     string statement;
     Statement *stmt;
     ResultSet *rs;
     cout << table << ID << endl;
-    statement = "SELECT COUNT(:2) FROM :1";
+    statement = "SELECT COUNT(*) FROM " + table;
     stmt = conn->createStatement(statement);
-    stmt->setString(1, table);
-    stmt->setInt(2, ID);
     rs = stmt->executeQuery();
-    numCategories = rs->getInt(1);
-
-    if (ID < 1 || ID > numCategories)
+    numTuples = rs->getInt(1);
+    cout << numTuples << endl;
+    if (ID < 1 || ID > numTuples)
     {
         return false;
     }
