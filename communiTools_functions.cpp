@@ -355,10 +355,14 @@ bool CommuniTools::addTool()
 
 void CommuniTools::showTools()
 {
+    string statement;
+    Statement *stmt;
+    ResultSet *rs;
+
     int numCategories;
     int catID;
 
-    clearCin();
+    cinClear();
     printCategories();
     cout << "Enter the category ID of what tools you want to see: ";
     cin >> catID;
