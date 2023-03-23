@@ -8,17 +8,17 @@ class Database {
 
     private:
 
-      string userName = "charlijj";
-      string password = "%Magnolia50";
-      string connectString =  "sunfire.csci.viu.ca";
+    string userName = "charlijj";
+    string password = "%Magnolia50";
+    string connectString =  "sunfire.csci.viu.ca";
         
     public:
 
     Environment *env;
     Connection *conn;
     Database();
-
     ~Database();
+    bool validateID(string table, string ID);
 };
 
 class CommuniTools
@@ -49,13 +49,6 @@ class CommuniTools
     bool logIn();
     void getOption(char cmd);
     void lineBreak(){cout<<endl<<endl;};
-    string getString(){
-      string str;
-      cin.clear();
-      cin.ignore(numToIgnore, '\n');
-      getline(cin, str);
-      return str;
-    };
     void cinClear(){
       cin.clear();
       cin.ignore(numToIgnore, '\n');

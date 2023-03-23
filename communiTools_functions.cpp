@@ -355,9 +355,19 @@ bool CommuniTools::addTool()
 
 void CommuniTools::showTools()
 {
-    string statement;
-    Statement *stmt;
-    ResultSet *rs;
+    int numCategories;
+    int catID;
+
+    clearCin();
+    printCategories();
+    cout << "Enter the category ID of what tools you want to see: ";
+    cin >> catID;
+
+    if (!DB.validateID("ToolCategories", catID) || cin.fail())
+    {
+        cout << "Invalid tool category." << endl;
+        return;
+    }
 
     string memberName;
     string borrowStatus; 
@@ -365,8 +375,9 @@ void CommuniTools::showTools()
     cout << left << setw(25) << "Tool" << setw(25) << "Owner" << setw(25) << "Community" << setw(20) << "Borrow Status" << setw(25) << "Condition" << endl;
     cout << left << setw(25) << "----" << setw(25) << "-----" << setw(25) << "---------" << setw(20) << "-------------" << setw(25) << "---------" << endl;
 
-    statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
+    statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
     stmt = DB.conn->createStatement(statement);
+    stmt.setString(1, comID);
     rs = stmt->executeQuery();
     while (rs->next())
     {
@@ -439,4 +450,20 @@ Database::~Database()
     Environment::terminateEnvironment(env);
 };
 
+bool Database::validateID(string table, string ID)
+{
+    string statement;
+    Statement *stmt;
+    ResultSet *rs;
 
+    statement = "SELECT COUNT(comID) FROM Communities";
+    stmt = conn->createStatement(statement);
+    rs = stmt->executeQuery();
+    numCategories = rs->getInt(1);
+
+    if (ID < 1 || ID > numCategories)
+    {
+        return false;
+    }
+    return true;
+}
