@@ -474,7 +474,8 @@ bool Database::validateID(string table, int ID)
     statement = "SELECT COUNT(*) FROM " + table;
     stmt = conn->createStatement(statement);
     rs = stmt->executeQuery();
-    numTuples = rs->next()->getInt(1);
+    if (!rs->next()) {return false;}
+    numTuples = rs->getInt(1);
     cout << numTuples << endl;
     if (ID < 1 || ID > numTuples)
     {
