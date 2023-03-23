@@ -450,7 +450,7 @@ Database::~Database()
     Environment::terminateEnvironment(env);
 };
 
-bool Database::validateID(string table, string ID)
+bool Database::validateID(string table, int ID)
 {
     string statement;
     Statement *stmt;

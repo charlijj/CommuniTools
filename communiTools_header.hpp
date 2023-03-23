@@ -18,7 +18,7 @@ class Database {
     Connection *conn;
     Database();
     ~Database();
-    bool validateID(string table, string ID);
+    bool validateID(string table, int ID);
 };
 
 class CommuniTools
