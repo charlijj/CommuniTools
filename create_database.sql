@@ -41,7 +41,9 @@ CREATE TABLE CommunityMembers (
     lastName VARCHAR(256),
     address VARCHAR(256),
     email VARCHAR(256),
-    phone VARCHAR(15)
+    phone VARCHAR(15),
+    username VARCHAR(256),
+    password VARCHAR(256)
 );
 
 CREATE TABLE Borrowers (
@@ -61,7 +63,7 @@ CREATE TABLE CommunityTools (
     memberID NUMBER(5) REFERENCES CommunityMembers,
     toolName VARCHAR(256),
     borrowStatus NUMBER(1, 0) DEFAULT 0,
-    condition VARCHAR(32)
+    condition VARCHAR(256)
 );
 
 CREATE TABLE BorrowRecords (
@@ -141,6 +143,7 @@ BEGIN
   :NEW.recordID := recordID_seq.NEXTVAL;
 END;
 /
+
 
 -- describe Communities;
 -- describe CommunityMembers;

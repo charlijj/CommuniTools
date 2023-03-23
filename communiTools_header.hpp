@@ -28,10 +28,13 @@ class CommuniTools
     Database DB;
   
     int numToIgnore = 256;
+    
+    void printCommunities();
+    void printCategories();
+    void showTools();
     bool verifyLogIn(string user, string pass);
     bool addMember();
     bool addTool();
-    bool showTools();
     bool borrowTool();
     bool returnTool();
     bool removeTool();
@@ -43,8 +46,6 @@ class CommuniTools
     ~CommuniTools();
     
     void printMenu();
-    void printCommunities();
-    void printCategories();
     bool logIn();
     void getOption(char cmd);
     void lineBreak(){cout<<endl<<endl;};

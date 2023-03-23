@@ -2,6 +2,7 @@
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
+#include <iomanip>
 #include "communiTools_header.hpp"
 
   using namespace std;
@@ -39,21 +40,46 @@ void CommuniTools::printCommunities()
     Statement *stmt;
     ResultSet *rs;
 
-    cout << "All communities: " << endl;
+    cout << left << setw(25) << "Community Name" << setw(15) << "Community ID" << endl;
+    cout << left << setw(25) << "--------------" << setw(15) << "------------" << endl;
 
     statement = "SELECT comName, comID FROM Communities";
     stmt = DB.conn->createStatement(statement);
     rs = stmt->executeQuery();
     while (rs->next())
     {
-        cout << "Community Name: " << rs->getString(1) << "\nCommunity ID: " << rs->getString(2) << endl<<endl;
+        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getString(2) << endl<<endl;
     }
     stmt->closeResultSet(rs);
+    DB.conn->terminateStatement(stmt);
+
+    cout << "-------------------------------------";
+
+    lineBreak();
 }
 
 void CommuniTools::printCategories()
 {
-    cout << "Printing all categories..." << endl;
+    string statement;
+    Statement *stmt;
+    ResultSet *rs;
+
+    cout << left << setw(25) << "Categorie" << setw(15) << "Categorie ID" << endl;
+    cout << left << setw(25) << "---------" << setw(15) << "------------" << endl;
+
+    statement = "SELECT catName, catID FROM ToolCategories";
+    stmt = DB.conn->createStatement(statement);
+    rs = stmt->executeQuery();
+    while (rs->next())
+    {
+        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getString(2) << endl<<endl;
+    }
+    stmt->closeResultSet(rs);
+    DB.conn->terminateStatement(stmt);
+
+    cout << "-------------------------------------";
+
+    lineBreak();
 }
 
 void CommuniTools::getOption(char cmd)
@@ -149,14 +175,24 @@ string CommuniTools::readPassword()
 
 bool CommuniTools::verifyLogIn(string user, string pass)
 {
-    lineBreak();
-    cout << "verifying credentials..." << endl;
+    string statement;
+    Statement *stmt;
+    ResultSet *rs;
 
-    if (user != "user" || pass != "pass")
+    lineBreak();
+
+    statement = "SELECT memberID FROM CommunityMembers WHERE username = :1 AND password = :2";
+    stmt = DB.conn->createStatement(statement);
+    stmt->setString(1, user);
+    stmt->setString(2, pass);
+    rs = stmt->executeQuery();
+    if (!rs->next())
     {
         return false;
     }
+    stmt->closeResultSet(rs);
 
+    cout << "----------------- Log In Successful -----------------" << endl;
     return true;
 }
 
@@ -173,6 +209,9 @@ bool CommuniTools::addMember()
     string address;
     string phone;
     string email;
+    string username;
+    string password1;
+    string password2;
 
     lineBreak();
     cinClear();
@@ -228,7 +267,6 @@ bool CommuniTools::addMember()
     }
     stmt->closeResultSet(rs);
 
-
     cout << "Enter address: " << endl;
     getline(cin, address);
 
@@ -238,8 +276,22 @@ bool CommuniTools::addMember()
     cout << "Enter phone: " << endl;
     getline(cin, phone);
 
-    statement = "INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)"
-        " VALUES (:1, :2, :3, :4, :5, :6";
+    cout << "Enter password: " << endl;
+    password1 = readPassword();
+
+    cout << "Enter password again: " << endl;
+    password2 = readPassword();
+
+    if (password1 != password2)
+    {
+        cout << "Passwords do not match." << endl;
+        return false;
+    }
+
+    username = lastName.substr(0, 6) + firstName.substr(0, 1);
+
+    statement = "INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)"
+        " VALUES (:1, :2, :3, :4, :5, :6, :7, :8)";
     stmt = DB.conn->createStatement(statement);
     stmt->setString(1, communityID);
     stmt->setString(2, firstName);
@@ -247,11 +299,13 @@ bool CommuniTools::addMember()
     stmt->setString(4, address);
     stmt->setString(5, email);
     stmt->setString(6, phone);
+    stmt->setString(7, username);
+    stmt->setString(8, password1);
     int rowsUpdated = stmt->executeUpdate();
 
     if (rowsUpdated == 1) // if update was successful, commit changes 
     {
-        cout << "Added member " << firstName << " " << lastName << " successfully" << endl;
+        cout << "Added member " << firstName << " " << lastName << " with user name " << username << " successfully." << endl;
         DB.conn->commit();
     }
     else
@@ -299,10 +353,39 @@ bool CommuniTools::addTool()
     }
 }
 
-bool CommuniTools::showTools()
+void CommuniTools::showTools()
 {
-    cout << "All tools: " << endl;
-    return true;
+    string statement;
+    Statement *stmt;
+    ResultSet *rs;
+
+    string memberName;
+    string borrowStatus; 
+
+    cout << left << setw(25) << "Tool" << setw(25) << "Owner" << setw(25) << "Community" << setw(20) << "Borrow Status" << setw(25) << "Condition" << endl;
+    cout << left << setw(25) << "----" << setw(25) << "-----" << setw(25) << "---------" << setw(20) << "-------------" << setw(25) << "---------" << endl;
+
+    statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
+    stmt = DB.conn->createStatement(statement);
+    rs = stmt->executeQuery();
+    while (rs->next())
+    {
+        memberName = rs->getString(2) + " " + rs->getString(3);
+        if (rs->getInt(5) == 0)
+        {
+            borrowStatus = "Available";
+        } else {
+            borrowStatus = "Not Available";
+        }
+
+        cout << left << setw(25) << rs->getString(1) << setw(25) << memberName << setw(25) << rs->getString(4) << setw(20) << borrowStatus << setw(25) << rs->getString(6) << endl;
+    }
+    stmt->closeResultSet(rs);
+    DB.conn->terminateStatement(stmt);
+
+    cout << "-------------------------------------";
+
+    lineBreak();
 }
 
 bool CommuniTools::borrowTool()
@@ -342,7 +425,7 @@ Database::Database()
         env = Environment::createEnvironment();
         conn = env->createConnection(userName, password, connectString);
 
-        cout << "----------Database connection succsessfull----------" << endl<<endl;
+        cout << "---------- Database Connection Successful ----------" << endl<<endl;
     }
     catch (SQLException &e)
     {

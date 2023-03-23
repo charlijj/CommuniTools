@@ -11,116 +11,85 @@ INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Lantzville', 'L
 INSERT INTO Communities (comName, comLocation, comSize) VALUES ('Cedar', 'Cedar BC', 4000);
 -----------------------------------------------------------------------------
 -- Insert Members -----------------------------------------------------------
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
-VALUES (1, 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (1, 'User', 'Test', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222', 'user', 'pass');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
-VALUES (2, 'Mary', 'Loop', '44 Mega St, Nanaimo BC', 'mail@mail.com', '250-555-4444');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (1, 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222', 'CharJ', 'BigStinky');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone) 
-VALUES (3, 'Jhon', 'Bee', '89 Last St, Nanaimo BC', 'mail@mail.com', '250-999-2222');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (1, 'Anakin', 'Skywalker', '1234 Tatooine Ave, Mos Espa', 'anakin@jediorder.com', '555-1234', 'SkywalkerA', 'TheChosenOne');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (1, 'John', 'Doe', '123 Main St', 'johndoe@email.com', '123-456-7890');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (2, 'Luke', 'Skywalker', '1234 Rebel Way, Hoth', 'luke@rebels.com', '555-5678', 'SkywalkerL', 'TheLastJedi');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (1, 'Jane', 'Smith', '456 Oak St', 'janesmith@email.com', '234-567-8901');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (3, 'Leia', 'Organa', '1234 Alderaan St, Aldera', 'leia@rebels.com', '555-4321', 'OrganaL', 'PrincessLeia');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (1, 'Bob', 'Johnson', '789 Maple St', 'bobjohnson@email.com', '345-678-9012');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (4, 'Han', 'Solo', '1234 Smuggler St, Corellia', 'han@falcon.com', '555-8765', 'SoloH', 'Ishotfirst');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (2, 'Alice', 'Lee', '321 Pine St', 'alicelee@email.com', '456-789-0123');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (5, 'Chewbacca', '', '1234 Kashyyyk Way, Kashyyyk', 'chewie@falcon.com', '555-2345', 'Chewie', 'Grrrrooooowwwwllll');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (2, 'Tom', 'Williams', '654 Birch St', 'tomwilliams@email.com', '567-890-1234');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (6, 'Obi-Wan', 'Kenobi', '1234 Jedi Temple, Coruscant', 'obi-wan@jediorder.com', '555-7890', 'KenobiO', 'HelloThere');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (2, 'Samantha', 'Taylor', '987 Cedar St', 'samanthataylor@email.com', '678-901-2345');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (6, 'Jean-Luc', 'Picard', '1701 Enterprise Way, La Barre, France', 'captain@enterprise.com', '555-1234', 'CaptainPicard', 'Engage123');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (3, 'Mike', 'Brown', '753 Elm St', 'mikebrown@email.com', '789-012-3456');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (7, 'William', 'Riker', '1701 Enterprise Way, Valdez, Alaska', 'will.riker@enterprise.com', '555-5678', 'CmdrRiker', 'NumberOne');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (3, 'Emily', 'Davis', '159 Spruce St', 'emilydavis@email.com', '890-123-4567');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (8, 'Data', '', '1701 Enterprise Way, Omicron Theta', 'data@enterprise.com', '555-9012', 'LtCmdrData', '1234567');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (4, 'David', 'Wilson', '951 Oak St', 'davidwilson@email.com', '901-234-5678');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (9, 'Deanna', 'Troi', '1701 Enterprise Way, Betazed', 'dtroi@enterprise.com', '555-3456', 'CounselorTroi', 'Betazoid1');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (4, 'Linda', 'Miller', '753 Maple St', 'lindamiller@email.com', '012-345-6789');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (10, 'Worf', '', '1701 Enterprise Way, QonoS', 'worf@enterprise.com', '555-7890', 'LtWorf', 'Honor12');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (5, 'Jean-Luc', 'Picard', '123 Main St', 'jlpicard@enterprise.com', '555-555-1212');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (6, 'Kathryn', 'Janeway', 'USS Voyager, Delta Quadrant', 'captain@voyager.com', '555-1234', 'CaptainJaneway', 'Coffee234');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (5, 'William', 'Riker', '456 Second St', 'wriker@enterprise.com', '555-555-2323');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (7, 'Chakotay', '', 'USS Voyager, Dorvan V', 'chakotay@voyager.com', '555-5678', 'CmdrChakotay', 'Maquis123');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (5, 'Geordi', 'La Forge', '789 Third St', 'glaforge@enterprise.com', '555-555-3434');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (8, 'Tuvok', '', 'USS Voyager, Vulcan', 'tuvok@voyager.com', '555-9012', 'LtCmdrTuvok', 'Vulcan123');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (5, 'Data', '', '321 Fourth St', 'data@enterprise.com', '555-555-4545');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (9, 'B`Elanna', 'Torres', 'USS Voyager, Kessik IV', 'btorres@voyager.com', '555-3456', 'LtTorres', 'HalfKlingon1');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (5, 'Deanna', 'Troi', '654 Fifth St', 'dtroi@enterprise.com', '555-555-5656');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
+VALUES (10, 'Seven', 'of Nine', 'USS Voyager, Borg Cube', 'seven@voyager.com', '555-7890', 'SevenOfNine', 'ResistanceIsFutile');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (6, 'Kathryn', 'Janeway', '123 Voyager Way', 'kjaneway@voyager.com', '555-555-6767');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (1, 'Neo', 'Anderson', '101 Trinity Lane, The Matrix', 'neo@thematrix.com', '555-1234', 'TheOne', 'Matrix123');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (6, 'Chakotay', '', '456 Voyager Way', 'chakotay@voyager.com', '555-555-7878');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (2, 'Trinity', 'Moss', '102 Trinity Lane, The Matrix', 'trinity@thematrix.com', '555-5678', 'NeoLover', 'ILoveNeo');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (6, 'Tuvok', '', '789 Voyager Way', 'tuvok@voyager.com', '555-555-8989');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (3, 'Morpheus', 'Fishburne', '103 Zion Ave, Zion City', 'morpheus@zioncity.com', '555-9012', 'RedPill', 'WakeUpNeo');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (6, 'Seven', 'of Nine', '321 Voyager Way', 'seven@voyager.com', '555-555-9090');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (4, 'Agent', 'Smith', '104 Matrix Lane, The Matrix', 'smith@thematrix.com', '555-3456', 'TheEnemy', 'IHateNeo');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (6, 'Tom', 'Paris', '654 Voyager Way', 'tparis@voyager.com', '555-555-0101');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (4, 'Agent', 'Mike', '104 Matrix Lane, The Matrix', 'smith@thematrix.com', '555-3456', 'TheEnemy2', 'IHateNeo2');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (7, 'Benjamin', 'Sisko', '123 Deep Space Nine', 'bsisko@ds9.com', '555-555-1212');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (4, 'Agent', 'Bob', '104 Matrix Lane, The Matrix', 'smith@thematrix.com', '555-3456', 'TheEnemy3', 'IHateNeo3');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (7, 'Kira', 'Nerys', '456 Deep Space Nine', 'knerys@ds9.com', '555-555-2323');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (4, 'Agent', 'Lary', '104 Matrix Lane, The Matrix', 'smith@thematrix.com', '555-3456', 'TheEnemy4', 'IHateNeo4');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (10, 'Odo', '', '789 Deep Space Nine', 'odo@ds9.com', '555-555-3434');
+INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
+VALUES (4, 'Agent', 'David', '104 Matrix Lane, The Matrix', 'smith@thematrix.com', '555-3456', 'TheEnemy5', 'IHateNeo5');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (8, 'Quark', '', '321 Deep Space Nine', 'quark@ds9.com', '555-555-4545');
 
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (7, 'Luke', 'Skywalker', '123 Tatooine Way', 'lukeskywalker@email.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (8, 'Leia', 'Organa', '456 Alderaan Rd', 'leiaorgana@email.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (9, 'Han', 'Solo', '789 Millennium Falcon Dr', 'hansolo@email.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (10, 'Chewbacca', 'Wookie', '1011 Kashyyyk Blvd', 'chewie@wookie.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (7, 'Obi-Wan', 'Kenobi', '121 Naboo Rd', 'obiwankenobi@email.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (8, 'Darth', 'Vader', '141 Coruscant Ave', 'darthvader@sith.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (9, 'Boba', 'Fett', '161 Kamino Blvd', 'bobafett@mandalorian.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (10, 'Yoda', '', '181 Dagobah St', 'yoda@jedi.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (7, 'Padmé', 'Amidala', '202 Coruscant Blvd', 'padmeamidala@naboo.com', '012-345-6789');
-
-INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone)
-VALUES (8, 'Emperor', 'Palpatine', '222 Imperial Palace', 'emperorpalpatine@sith.com', '012-345-6789');
 -----------------------------------------------------------------------------
 -- Insert Categories --------------------------------------------------------
 
