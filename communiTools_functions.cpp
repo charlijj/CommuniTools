@@ -468,7 +468,7 @@ bool Database::validateID(string table, int ID)
     statement = "SELECT COUNT(:2) FROM :1";
     stmt = conn->createStatement(statement);
     stmt->setString(1, table);
-    stmt->setString(2, ID);
+    stmt->setID(2, ID);
     rs = stmt->executeQuery();
     numCategories = rs->getInt(1);
 
