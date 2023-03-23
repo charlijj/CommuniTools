@@ -366,10 +366,16 @@ void CommuniTools::showTools()
     cout << "Enter the category ID of what tools you want to see, enter 0 for all tools: ";
     cin >> catID;
 
+    try{
     if (!DB.validateID("ToolCategories", catID) || cin.fail() && catID != 0)
     {
         cout << "Invalid tool category." << endl;
         return;
+    }
+    }
+    catch (SQLException &e)
+    {
+        cout << e.what() << "this one" ;
     }
 
     string memberName;
