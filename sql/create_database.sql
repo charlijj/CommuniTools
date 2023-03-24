@@ -48,7 +48,7 @@ CREATE TABLE CommunityMembers (
 
 CREATE TABLE Borrowers (
     memberID NUMBER(5) PRIMARY KEY REFERENCES CommunityMembers,
-    numToolsBorrowing NUMBER(1, 0)
+    numToolsBorrowing NUMBER(2, 0) DEFAULT 0
 );
 
 CREATE TABLE ToolCategories (

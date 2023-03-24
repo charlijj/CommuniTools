@@ -13,12 +13,71 @@
 
 CommuniTools::CommuniTools()
 {
-    return;
+    getCommunities = "SELECT comName, comID FROM Communities";
+    getCommunitiesStatement = DB.conn->createStatement(getCommunities);
+
+    getCategories = "SELECT catName, catID, catDescription FROM ToolCategories";
+    getCategoriesStatement = DB.conn->createStatement(getCategories);
+
+    getMemberByName = "SELECT memberID FROM CommunityMembers WHERE firstName = :1 AND lastName = :2";
+    getMemberByNameStatement = DB.conn->createStatement(getMemberByName);
+
+    getBorrowStatus = "SELECT borrowStatus FROM CommunityTools WHERE toolID = :1";
+    getBorrowStatusStatement = DB.conn->createStatement(getBorrowStatus);
+
+    getNumToolsBorrowing = "SELECT numToolsBorrowing FROM Borrowers WHERE memberID = :1";
+    getNumToolsBorrowingStatement = DB.conn->createStatement(getNumToolsBorrowing);
+
+    updateNumToolsBorrowing = "UPDATE Borrowers SET numToolsBorrowing = :1 WHERE memberID = :2";
+    updateNumToolsBorrowingStatement = DB.conn->createStatement(getNumToolsBorrowing);
+
+    updateBorrowStatus = "UPDATE CommunityTools SET borrowStatus = :1 WHERE toolID = :2";
+    updateBorrowStatusStatement = DB.conn->createStatement(updateBorrowStatus);
+
+    validateLogin = "SELECT memberID FROM CommunityMembers WHERE username = :1 AND password = :2";
+    validateLoginStatement  = DB.conn->createStatement(validateLogin);
+
+    showAllTools = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
+    showAllToolsStatement = DB.conn->createStatement(showAllTools);
+
+    showAllAvailableTools = "SELECT toolName, toolID, firstName, lastName, comName, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE borrowStatus = 0 ORDER BY comName DESC";
+    showAllAvailableToolsStatement = DB.conn->createStatement(showAllAvailableTools);
+
+    showAllToolsOfCategory = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
+    showAllToolsOfCategoryStatement = DB.conn->createStatement(showAllToolsOfCategory);
+
+    insertNewMember = "INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)"
+        " VALUES (:1, :2, :3, :4, :5, :6, :7, :8)";
+    insertNewMemberStatement = DB.conn->createStatement(insertNewMember);
+
+    insertNewTool = "INSERT INTO CommunityTools (catID, memberID, toolName, condition) VALUES (:1, :2, :3, :4)";
+    insertNewToolStatement = DB.conn->createStatement(insertNewTool);
+
+    insertBorrowRecord = "INSERT INTO BorrowRecords (memberID, toolID, rentDate) VALUES (:1, :2, SYSDATE)";
+    insertBorrowRecordStatement = DB.conn->createStatement(insertBorrowRecord);
+
+    insertBorrower = "INSERT INTO Borrowers (memberID, numToolsBorrowing) VALUES (:1, :2)";
+    insertBorrowerStatement = DB.conn->createStatement(insertBorrower); 
+
 }
 
 CommuniTools::~CommuniTools()
 {
-    return;
+    DB.conn->terminateStatement(getCommunitiesStatement);
+    DB.conn->terminateStatement(getCategoriesStatement);
+    DB.conn->terminateStatement(getMemberByNameStatement);
+    DB.conn->terminateStatement(getBorrowStatusStatement);
+    DB.conn->terminateStatement(getNumToolsBorrowingStatement);
+    DB.conn->terminateStatement(updateNumToolsBorrowingStatement);
+    DB.conn->terminateStatement(updateBorrowStatusStatement);
+    DB.conn->terminateStatement(insertNewMemberStatement);
+    DB.conn->terminateStatement(insertNewToolStatement);
+    DB.conn->terminateStatement(insertBorrowRecordStatement);
+    DB.conn->terminateStatement(insertBorrowerStatement);
+    DB.conn->terminateStatement(validateLoginStatement);
+    DB.conn->terminateStatement(showAllToolsStatement);
+    DB.conn->terminateStatement(showAllAvailableToolsStatement);
+    DB.conn->terminateStatement(showAllToolsOfCategoryStatement);
 }
 
 void CommuniTools::printMenu()
@@ -34,50 +93,42 @@ void CommuniTools::printMenu()
     cout << "Q: to quit program." << endl;
 }
 
-void CommuniTools::printCommunities()
+void CommuniTools::printCommunities() // Done
 {
-    string statement;
-    Statement *stmt;
     ResultSet *rs;
 
     cout << left << setw(25) << "Community Name" << setw(15) << "Community ID" << endl;
     cout << left << setw(25) << "--------------" << setw(15) << "------------" << endl;
 
-    statement = "SELECT comName, comID FROM Communities";
-    stmt = DB.conn->createStatement(statement);
-    rs = stmt->executeQuery();
+    rs = getCommunitiesStatement->executeQuery();
     while (rs->next())
     {
         cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getString(2) << endl<<endl;
     }
-    stmt->closeResultSet(rs);
-    DB.conn->terminateStatement(stmt);
+    getCommunitiesStatement->closeResultSet(rs);
 
     cout << "-------------------------------------";
 
     lineBreak();
 }
 
-void CommuniTools::printCategories()
+void CommuniTools::printCategories() // Done
 {
     string statement;
     Statement *stmt;
     ResultSet *rs;
 
-    cout << left << setw(25) << "Categorie" << setw(15) << "Categorie ID" << endl;
-    cout << left << setw(25) << "---------" << setw(15) << "------------" << endl;
+    cout << left << setw(25) << "Categorie" << setw(15) << "Categorie ID" << setw(50) << "Categorie Description" << endl;
+    cout << left << setw(25) << "---------" << setw(15) << "------------" << setw(50) << "---------------------" << endl;
 
-    statement = "SELECT catName, catID FROM ToolCategories";
-    stmt = DB.conn->createStatement(statement);
-    rs = stmt->executeQuery();
+    rs = getCategoriesStatement->executeQuery();
     while (rs->next())
     {
-        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getString(2) << endl<<endl;
+        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getString(2) << setw(50) << rs->getString(3) << endl<<endl;
     }
-    stmt->closeResultSet(rs);
-    DB.conn->terminateStatement(stmt);
+    getCategoriesStatement->closeResultSet(rs);
 
-    cout << "-------------------------------------";
+    cout << "--------------------------------------------------------------------------";
 
     lineBreak();
 }
@@ -158,7 +209,7 @@ bool CommuniTools::logIn()
 
 // Private Methods -----------------------------------------------------
 
-string CommuniTools::readPassword()
+string CommuniTools::readPassword() // Done
 {
     struct termios settings;
     tcgetattr(STDIN_FILENO, &settings);
@@ -173,39 +224,34 @@ string CommuniTools::readPassword()
     return password;
 }
 
-bool CommuniTools::verifyLogIn(string user, string pass)
+bool CommuniTools::verifyLogIn(string user, string pass) // Done
 {
-    string statement;
-    Statement *stmt;
     ResultSet *rs;
 
     lineBreak();
 
-    statement = "SELECT memberID FROM CommunityMembers WHERE username = :1 AND password = :2";
-    stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, user);
-    stmt->setString(2, pass);
-    rs = stmt->executeQuery();
+    validateLoginStatement->setString(1, user);
+    validateLoginStatement->setString(2, pass);
+    rs = validateLoginStatement->executeQuery();
     if (!rs->next())
     {
         return false;
     }
-    stmt->closeResultSet(rs);
+    currentUser = rs->getInt(1);
+    validateLoginStatement->closeResultSet(rs);
 
     cout << "----------------- Log In Successful -----------------" << endl;
     return true;
 }
 
-bool CommuniTools::addMember()
+bool CommuniTools::addMember() // Done
 {
-    string statement;
-    Statement *stmt;
     ResultSet *rs;
 
-    string referralMember;
+    int referralMember;
+    int comID;
     string firstName;
     string lastName;
-    string communityID;
     string address;
     string phone;
     string email;
@@ -214,25 +260,19 @@ bool CommuniTools::addMember()
     string password2;
 
     lineBreak();
-    cinClear();
 
     cout << "Enter the required information for the new member: " << endl;
 
     cout << "Enter member ID of referral member: " << endl;
-    getline(cin, referralMember);
+    cin >> referralMember;
 
-    statement = "SELECT memberID FROM CommunityMembers WHERE memberID = :1";
-    stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, referralMember);
-    rs = stmt->executeQuery();
-    
-    if (!rs->next())
+    if (cin.fail() || !DB.validateID("CommunityMembers", referralMember))
     {
         cout << "No member with ID " << referralMember << " exists." << endl;
         return false;
     }
-    stmt->closeResultSet(rs);
-
+    
+    cinClear();
 
     cout << "Enter fist name: " << endl;
     getline(cin, firstName);
@@ -240,32 +280,27 @@ bool CommuniTools::addMember()
     cout << "Enter last name: " << endl;
     getline(cin, lastName);
 
-    statement = "SELECT memberID FROM CommunityMembers WHERE firstName = :1 AND lastName = :2";
-    stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, firstName);
-    stmt->setString(2, lastName);
-    rs = stmt->executeQuery();
+    getMemberByNameStatement->setString(1, firstName);
+    getMemberByNameStatement->setString(2, lastName);
+    rs = getMemberByNameStatement->executeQuery();
     if (rs->next())
     {
         cout << firstName << " " << lastName << " is already a member." << endl;
         return false;
     }
-    stmt->closeResultSet(rs);
+    getMemberByNameStatement->closeResultSet(rs);
 
     printCommunities();
     cout << "Enter community ID: " << endl;
-    getline(cin, communityID);
+    cin >> comID;
 
-    statement = "SELECT comID FROM Communities WHERE comID = :1";
-    stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, communityID);
-    rs = stmt->executeQuery();
-    if (!rs->next())
+    if (cin.fail() || !DB.validateID("Communities", comID))
     {
-        cout << "No community with ID " << communityID << " exists." << endl;
+        cout << "No community with ID " << comID << " exists." << endl;
         return false;
     }
-    stmt->closeResultSet(rs);
+
+    cinClear();
 
     cout << "Enter address: " << endl;
     getline(cin, address);
@@ -290,35 +325,32 @@ bool CommuniTools::addMember()
 
     username = lastName.substr(0, 6) + firstName.substr(0, 1);
 
-    statement = "INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)"
-        " VALUES (:1, :2, :3, :4, :5, :6, :7, :8)";
-    stmt = DB.conn->createStatement(statement);
-    stmt->setString(1, communityID);
-    stmt->setString(2, firstName);
-    stmt->setString(3, lastName);
-    stmt->setString(4, address);
-    stmt->setString(5, email);
-    stmt->setString(6, phone);
-    stmt->setString(7, username);
-    stmt->setString(8, password1);
-    int rowsUpdated = stmt->executeUpdate();
+    insertNewMemberStatement->setInt(1, comID);
+    insertNewMemberStatement->setString(2, firstName);
+    insertNewMemberStatement->setString(3, lastName);
+    insertNewMemberStatement->setString(4, address);
+    insertNewMemberStatement->setString(5, email);
+    insertNewMemberStatement->setString(6, phone);
+    insertNewMemberStatement->setString(7, username);
+    insertNewMemberStatement->setString(8, password1);
+    int rowsUpdated = insertNewMemberStatement->executeUpdate();
 
     if (rowsUpdated == 1) // if update was successful, commit changes 
     {
         cout << "Added member " << firstName << " " << lastName << " with user name " << username << " successfully." << endl;
         DB.conn->commit();
+        return true;
     }
     else
     {
         cerr << "Error: Failed to update record" << endl;
+        return false;
     }
-    DB.conn->terminateStatement(stmt);
 }
 
-bool CommuniTools::addTool()
+bool CommuniTools::addTool() // Done
 {
-    string statement;
-    string category;
+    int catID;
     string name;
     string condition;
 
@@ -326,11 +358,21 @@ bool CommuniTools::addTool()
     cinClear();
     
     printCategories();
-    cout << "Enter tool category: " << endl;
-    getline(cin, category);
+    cout << "Enter the tool category: " << endl;
+    cin >> catID;
 
-    statement = "SELECT catID from Categories WHERE catID = :1 OR catName = :2";
-
+    if (cin.fail())
+    {
+        cinClear();
+        cout << "Invalid tool category ID." << endl;
+        return false;
+    }
+    else if (!DB.validateID("ToolCategories", catID))
+    {
+        cout << "Invalid tool category ID." << endl;
+        return false;
+    }
+    cinClear();
 
     cout << "Enter tool name: " << endl;
     getline(cin, name);
@@ -338,27 +380,30 @@ bool CommuniTools::addTool()
     cout << "Enter tool condition: " << endl;
     getline(cin, condition);
 
-    statement = "INSERT INTO Tools (catID, toolName, condition)"
-        " VALUES (:1, :2, :3)";
-
-    try
+    insertNewToolStatement->setInt(1, catID);
+    insertNewToolStatement->setInt(2, currentUser);
+    insertNewToolStatement->setString(3, name);
+    insertNewToolStatement->setString(4, condition);
+    int rowsUpdated = insertNewToolStatement->executeUpdate();
+    if (rowsUpdated == 1) // if update was successful, commit changes 
     {
-        cout << "New tool successfully added!" << endl;
+        cout << "Added tool " << name << " successfully." << endl;
+        DB.conn->commit();
         return true;
     }
-    catch(exception& e)
+    else
     {
-        std::cerr << e.what() << endl;
+        cerr << "Error: Failed to update record" << endl;
         return false;
     }
 }
 
-void CommuniTools::showTools()
+void CommuniTools::showTools() // Done
 {
-    string statement;
-    Statement *stmt;
     ResultSet *rs;
 
+    string memberName;
+    string borrowStatus; 
     int catID = 0;
 
     cinClear();
@@ -366,33 +411,32 @@ void CommuniTools::showTools()
     cout << "Enter the category ID of what tools you want to see, enter 0 for all tools: ";
     cin >> catID;
 
-    try{
-    if ((!DB.validateID("ToolCategories", catID) || cin.fail()) && catID != 0)
+    if (cin.fail())
+    {
+        cinClear();
+        cout << "Invalid tool category ID." << endl;
+        return;
+    }
+    else if (catID == 0)
+    {
+        rs = showAllToolsStatement->executeQuery();
+    }
+    else if (!DB.validateID("ToolCategories", catID))
     {
         cout << "Invalid tool category." << endl;
         return;
     }
-    }
-    catch (SQLException &e)
+    else
     {
-        cout << e.what() << "this one" ;
+        showAllToolsOfCategoryStatement->setInt(1, catID);
+        rs = showAllToolsOfCategoryStatement->executeQuery();
     }
 
-    string memberName;
-    string borrowStatus; 
+    lineBreak();
 
     cout << left << setw(25) << "Tool" << setw(25) << "Owner" << setw(25) << "Community" << setw(20) << "Borrow Status" << setw(25) << "Condition" << endl;
     cout << left << setw(25) << "----" << setw(25) << "-----" << setw(25) << "---------" << setw(20) << "-------------" << setw(25) << "---------" << endl;
 
-    if (catID == 0){
-        statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
-    }
-    else {
-        statement = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
-    }
-    stmt = DB.conn->createStatement(statement);
-    stmt->setInt(1, catID);
-    rs = stmt->executeQuery();
     while (rs->next())
     {
         memberName = rs->getString(2) + " " + rs->getString(3);
@@ -405,25 +449,115 @@ void CommuniTools::showTools()
 
         cout << left << setw(25) << rs->getString(1) << setw(25) << memberName << setw(25) << rs->getString(4) << setw(20) << borrowStatus << setw(25) << rs->getString(6) << endl;
     }
-    stmt->closeResultSet(rs);
-    DB.conn->terminateStatement(stmt);
 
     cout << "-------------------------------------";
 
     lineBreak();
 }
 
-bool CommuniTools::borrowTool()
+void CommuniTools::showAvailableTools() // Done
 {
-    string toolID;
-
-    lineBreak();
-    cinClear();
+    ResultSet *rs;
+    string memberName;
 
     cout << "All tools available to rent: " << endl;
+    cout << left << setw(25) << "Tool" << setw(15) << "Tool ID" << setw(25) << "Owner" << setw(25) << "Community" << setw(25) << "Condition" << endl;
+    cout << left << setw(25) << "----" << setw(15) << "-------" << setw(25) << "-----" << setw(25) << "---------" <<  setw(25) << "---------" << endl;
+    
+    rs = showAllAvailableToolsStatement->executeQuery();
+    while (rs->next())
+    {
+        memberName = rs->getString(3) + " " + rs->getString(4);
+        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getInt(2) << setw(25) << memberName << setw(25) << rs->getString(5) << setw(25) << rs->getString(6) << endl;
+    }
+    showAllAvailableToolsStatement->closeResultSet(rs);
+}
+
+bool CommuniTools::borrowTool()
+{
+    ResultSet *rs;
+    int toolID;
+    int numToolsBorrowing = 0;
+
+    lineBreak();
+    cinClear();    
+    showAvailableTools();
 
     cout << "Enter tool ID of tool you would like to borrow: " << endl;
-    getline(cin, toolID);
+    cin >> toolID;
+
+    if (cin.fail())
+    {
+        cinClear();
+        cout << "Invalid tool ID." << endl;
+        return false;
+    }
+    else if (!DB.validateID("CommunityTools", toolID))
+    {
+        cout << "Invalid tool ID." << endl;
+        return false;
+    }
+
+    getBorrowStatusStatement->setInt(1, toolID);
+    rs = getBorrowStatusStatement->executeQuery();
+    rs->next();
+    if (rs->getInt(1) != 0)
+    {
+        cout << "Tool " << toolID << " is already being borrowed." << endl;
+        return false;
+    }
+    getBorrowStatusStatement->closeResultSet(rs);
+
+
+    updateBorrowStatusStatement->setInt(1, 1);
+    updateBorrowStatusStatement->setInt(2, toolID);
+    int rowsUpdated = updateBorrowStatusStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
+
+    insertBorrowRecordStatement->setInt(1, currentUser);
+    insertBorrowRecordStatement->setInt(2, toolID);
+    rowsUpdated = insertBorrowRecordStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
+
+    getNumToolsBorrowingStatement->setInt(1, currentUser);
+    rs = getNumToolsBorrowingStatement->executeQuery();
+    if (rs->next())
+    {
+        // updateNumToolsBorrowing = "UPDATE Borrowers SET numToolsBorrowing = :1 WHERE memberID = :2";
+        numToolsBorrowing = rs->getInt(1);
+        updateNumToolsBorrowingStatement->setInt(1, numToolsBorrowing + 1);
+        updateNumToolsBorrowingStatement->setInt(2, currentUser);
+        rowsUpdated = updateNumToolsBorrowingStatement->executeUpdate();
+        if (rowsUpdated != 1)
+        {
+            cerr << "Error: Failed to update record" << endl;
+            return false;
+        }
+    }
+    else
+    {
+        insertBorrowerStatement->setInt(1, currentUser);
+        insertBorrowerStatement->setInt(2, numToolsBorrowing + 1);
+        rowsUpdated = insertBorrowerStatement->executeUpdate();
+        if (rowsUpdated != 1)
+        {
+            cerr << "Error: Failed to update record" << endl;
+            return false;
+        }
+    }
+    getNumToolsBorrowingStatement->closeResultSet(rs);
+
+
+    cout << "Tool " << toolID << " is now being borrowed." << endl;
+    DB.conn->commit();
     return true;
 }
 
@@ -449,7 +583,7 @@ Database::Database()
     {
         env = Environment::createEnvironment();
         conn = env->createConnection(userName, password, connectString);
-
+        
         cout << "---------- Database Connection Successful ----------" << endl<<endl;
     }
     catch (SQLException &e)
@@ -467,17 +601,22 @@ Database::~Database()
 bool Database::validateID(string table, int ID)
 {
     int numTuples;
-    string statement;
-    Statement *stmt;
     ResultSet *rs;
-    statement = "SELECT COUNT(*) FROM " + table;
-    stmt = conn->createStatement(statement);
-    rs = stmt->executeQuery();
+    string getNumTuples;
+    Statement *getNumTuplesIDStatement;
+    
+    getNumTuples = "SELECT COUNT(*) FROM " + table;
+    getNumTuplesIDStatement = conn->createStatement(getNumTuples);
+    rs = getNumTuplesIDStatement->executeQuery();
     if (!rs->next()) {return false;}
     numTuples = rs->getInt(1);
     if (ID < 1 || ID > numTuples)
     {
+        getNumTuplesIDStatement->closeResultSet(rs);
+        conn->terminateStatement(getNumTuplesIDStatement);
         return false;
     }
+    getNumTuplesIDStatement->closeResultSet(rs);
+    conn->terminateStatement(getNumTuplesIDStatement);
     return true;
 }

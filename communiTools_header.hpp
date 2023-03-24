@@ -11,7 +11,7 @@ class Database {
     string userName = "charlijj";
     string password = "%Magnolia50";
     string connectString =  "sunfire.csci.viu.ca";
-        
+
     public:
 
     Environment *env;
@@ -25,13 +25,61 @@ class CommuniTools
 {
     private:
 
+    int currentUser;
+
     Database DB;
-  
+
+    string getCommunities;
+    Statement *getCommunitiesStatement;
+
+    string getCategories;
+    Statement *getCategoriesStatement;
+
+    string getMemberByName;
+    Statement *getMemberByNameStatement;
+
+    string getBorrowStatus;
+    Statement *getBorrowStatusStatement;
+
+    string getNumToolsBorrowing;
+    Statement *getNumToolsBorrowingStatement;
+
+    string updateNumToolsBorrowing;
+    Statement *updateNumToolsBorrowingStatement;
+
+    string updateBorrowStatus;
+    Statement *updateBorrowStatusStatement;
+
+    string validateLogin;
+    Statement *validateLoginStatement;
+
+    string showAllTools;
+    Statement *showAllToolsStatement;
+
+    string showAllAvailableTools;
+    Statement *showAllAvailableToolsStatement;
+
+    string showAllToolsOfCategory;
+    Statement *showAllToolsOfCategoryStatement;
+
+    string insertNewMember;
+    Statement *insertNewMemberStatement;
+
+    string insertNewTool;
+    Statement *insertNewToolStatement;
+
+    string insertBorrowRecord;
+    Statement *insertBorrowRecordStatement;
+
+    string insertBorrower;
+    Statement *insertBorrowerStatement;
+
     int numToIgnore = 256;
     
     void printCommunities();
     void printCategories();
     void showTools();
+    void showAvailableTools();
     bool verifyLogIn(string user, string pass);
     bool addMember();
     bool addTool();
