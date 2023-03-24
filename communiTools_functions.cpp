@@ -16,6 +16,12 @@ CommuniTools::CommuniTools()
     getCommunities = "SELECT comName, comID FROM Communities";
     getCommunitiesStatement = DB.conn->createStatement(getCommunities);
 
+    getCommunityOfMember = "SELECT comID FROM CommunityMembers WHERE memberID = :1";
+    getCommunityOfMemberStatement = DB.conn->createStatement(getCommunityOfMember);
+
+    getToolOwner = "SELECT firstName, lastName, memberID, address, toolName FROM CommunityMembers NATURAL JOIN CommunityTools WHERE toolID = :1";
+    getToolOwnerStatement = DB.conn->createStatement(getToolOwner);
+
     getCategories = "SELECT catName, catID, catDescription FROM ToolCategories";
     getCategoriesStatement = DB.conn->createStatement(getCategories);
 
@@ -25,11 +31,14 @@ CommuniTools::CommuniTools()
     getBorrowStatus = "SELECT borrowStatus FROM CommunityTools WHERE toolID = :1";
     getBorrowStatusStatement = DB.conn->createStatement(getBorrowStatus);
 
+    getOwnedTools = "SELECT toolName, toolID FROM CommunityTools WHERE memberID = :1";
+    getOwnedToolsStatement = DB.conn->createStatement(getOwnedTools);
+
     getNumToolsBorrowing = "SELECT numToolsBorrowing FROM Borrowers WHERE memberID = :1";
     getNumToolsBorrowingStatement = DB.conn->createStatement(getNumToolsBorrowing);
 
     updateNumToolsBorrowing = "UPDATE Borrowers SET numToolsBorrowing = :1 WHERE memberID = :2";
-    updateNumToolsBorrowingStatement = DB.conn->createStatement(getNumToolsBorrowing);
+    updateNumToolsBorrowingStatement = DB.conn->createStatement(updateNumToolsBorrowing);
 
     updateBorrowStatus = "UPDATE CommunityTools SET borrowStatus = :1 WHERE toolID = :2";
     updateBorrowStatusStatement = DB.conn->createStatement(updateBorrowStatus);
@@ -40,7 +49,10 @@ CommuniTools::CommuniTools()
     showAllTools = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
     showAllToolsStatement = DB.conn->createStatement(showAllTools);
 
-    showAllAvailableTools = "SELECT toolName, toolID, firstName, lastName, comName, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE borrowStatus = 0 ORDER BY comName DESC";
+    showCurrentToolBorrows = "SELECT toolName, T.toolID, firstName, lastName, rentDate FROM CommunityTools T JOIN BorrowRecords R ON T.toolID = R.toolID JOIN CommunityMembers M ON T.memberID = M.memberID WHERE R.memberID = :1 AND returnDate IS NULL ORDER BY rentDate DESC";
+    showCurrentToolBorrowsStatement = DB.conn->createStatement(showCurrentToolBorrows);
+
+    showAllAvailableTools = "SELECT toolName, toolID, firstName, lastName, comName, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE borrowStatus = 0 AND memberID <> :1 AND comID = :2 ORDER BY firstName DESC";
     showAllAvailableToolsStatement = DB.conn->createStatement(showAllAvailableTools);
 
     showAllToolsOfCategory = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
@@ -56,15 +68,29 @@ CommuniTools::CommuniTools()
     insertBorrowRecord = "INSERT INTO BorrowRecords (memberID, toolID, rentDate) VALUES (:1, :2, SYSDATE)";
     insertBorrowRecordStatement = DB.conn->createStatement(insertBorrowRecord);
 
+    updateBorrowRecord = "UPDATE BorrowRecords SET returnDate = SYSDATE WHERE toolID = :1 AND memberID = :2";
+    updateBorrowRecordStatement = DB.conn->createStatement(updateBorrowRecord);
+
+    getBorrowRecord = "SELECT recordID FROM BorrowRecords WHERE toolID = :1 AND memberID = :2";
+    getBorrowRecordStatement = DB.conn->createStatement(getBorrowRecord);
+
     insertBorrower = "INSERT INTO Borrowers (memberID, numToolsBorrowing) VALUES (:1, :2)";
     insertBorrowerStatement = DB.conn->createStatement(insertBorrower); 
 
+    removeTool = "DELETE FROM CommunityTools WHERE toolID = :1 and memberID = :2";
+    removeToolStatement = DB.conn->createStatement(removeTool);
+
+    removeToolFromRecord = "UPDATE BorrowRecords SET toolID = NULL WHERE toolID = :1";
+    removeToolFromRecordStatement = DB.conn->createStatement(removeToolFromRecord);
 }
 
 CommuniTools::~CommuniTools()
 {
     DB.conn->terminateStatement(getCommunitiesStatement);
+    DB.conn->terminateStatement(getCommunityOfMemberStatement);
     DB.conn->terminateStatement(getCategoriesStatement);
+    DB.conn->terminateStatement(getToolOwnerStatement);
+    DB.conn->terminateStatement(getOwnedToolsStatement);
     DB.conn->terminateStatement(getMemberByNameStatement);
     DB.conn->terminateStatement(getBorrowStatusStatement);
     DB.conn->terminateStatement(getNumToolsBorrowingStatement);
@@ -74,10 +100,15 @@ CommuniTools::~CommuniTools()
     DB.conn->terminateStatement(insertNewToolStatement);
     DB.conn->terminateStatement(insertBorrowRecordStatement);
     DB.conn->terminateStatement(insertBorrowerStatement);
+    DB.conn->terminateStatement(updateBorrowRecordStatement);
+    DB.conn->terminateStatement(getBorrowRecordStatement);
     DB.conn->terminateStatement(validateLoginStatement);
     DB.conn->terminateStatement(showAllToolsStatement);
     DB.conn->terminateStatement(showAllAvailableToolsStatement);
     DB.conn->terminateStatement(showAllToolsOfCategoryStatement);
+    DB.conn->terminateStatement(showCurrentToolBorrowsStatement);
+    DB.conn->terminateStatement(removeToolStatement);
+    DB.conn->terminateStatement(removeToolFromRecordStatement);
 }
 
 void CommuniTools::printMenu()
@@ -159,7 +190,7 @@ void CommuniTools::getOption(char cmd)
         break;
     case 'D':
         cout << "Removing tool from lend list..." << endl;
-        removeTool();
+        unlistTool();
         break;
     
     default:
@@ -459,11 +490,20 @@ void CommuniTools::showAvailableTools() // Done
 {
     ResultSet *rs;
     string memberName;
+    int currentUserCom;
 
     cout << "All tools available to rent: " << endl;
     cout << left << setw(25) << "Tool" << setw(15) << "Tool ID" << setw(25) << "Owner" << setw(25) << "Community" << setw(25) << "Condition" << endl;
     cout << left << setw(25) << "----" << setw(15) << "-------" << setw(25) << "-----" << setw(25) << "---------" <<  setw(25) << "---------" << endl;
     
+    getCommunityOfMemberStatement->setInt(1, currentUser);
+    rs = getCommunityOfMemberStatement->executeQuery();
+    rs->next();
+    currentUserCom = rs->getInt(1);
+    getCommunityOfMemberStatement->closeResultSet(rs);
+
+    showAllAvailableToolsStatement->setInt(1, currentUser);
+    showAllAvailableToolsStatement->setInt(2, currentUserCom);
     rs = showAllAvailableToolsStatement->executeQuery();
     while (rs->next())
     {
@@ -473,15 +513,17 @@ void CommuniTools::showAvailableTools() // Done
     showAllAvailableToolsStatement->closeResultSet(rs);
 }
 
-bool CommuniTools::borrowTool()
+bool CommuniTools::borrowTool() // Done
 {
     ResultSet *rs;
     int toolID;
     int numToolsBorrowing = 0;
+    string memberName;
 
     lineBreak();
     cinClear();    
     showAvailableTools();
+    lineBreak();
 
     cout << "Enter tool ID of tool you would like to borrow: " << endl;
     cin >> toolID;
@@ -531,8 +573,8 @@ bool CommuniTools::borrowTool()
     rs = getNumToolsBorrowingStatement->executeQuery();
     if (rs->next())
     {
-        // updateNumToolsBorrowing = "UPDATE Borrowers SET numToolsBorrowing = :1 WHERE memberID = :2";
         numToolsBorrowing = rs->getInt(1);
+        
         updateNumToolsBorrowingStatement->setInt(1, numToolsBorrowing + 1);
         updateNumToolsBorrowingStatement->setInt(2, currentUser);
         rowsUpdated = updateNumToolsBorrowingStatement->executeUpdate();
@@ -542,6 +584,7 @@ bool CommuniTools::borrowTool()
             return false;
         }
     }
+
     else
     {
         insertBorrowerStatement->setInt(1, currentUser);
@@ -556,19 +599,183 @@ bool CommuniTools::borrowTool()
     getNumToolsBorrowingStatement->closeResultSet(rs);
 
 
-    cout << "Tool " << toolID << " is now being borrowed." << endl;
+    getToolOwnerStatement->setInt(1, toolID);
+    rs = getToolOwnerStatement->executeQuery();
+    rs->next();
+    memberName = rs->getString(1) + " " + rs->getString(2);
+    cout << "You are now borrowing " << rs->getString(5) << " from " << memberName << " ID: " << rs->getInt(3) <<  ", you can pick up your tool at " << rs->getString(4) << "." << endl;
+    getToolOwnerStatement->closeResultSet(rs);
+
     DB.conn->commit();
     return true;
 }
 
-bool CommuniTools::returnTool()
+bool CommuniTools::returnTool() // Done
 {
+    ResultSet *rs;
+    int toolID;
+    int rowsUpdated;
+    int numToolsBorrowing = 0;
+
+    lineBreak();
+    cinClear();    
+    showToolBorrows();
+    lineBreak();
+
+    cout << "Enter the tool ID of the tool you would like to return: ";
+    cin >> toolID;
+
+    if (cin.fail())
+    {
+        cinClear();
+        cout << "Invalid tool ID." << endl;
+        return false;
+    }
+    else if (!DB.validateID("CommunityTools", toolID))
+    {
+        cout << "Invalid tool ID." << endl;
+        return false;
+    }
+
+    getBorrowRecordStatement->setInt(1, toolID);
+    getBorrowRecordStatement->setInt(2, currentUser);
+    rs = getBorrowRecordStatement->executeQuery();
+    if (!rs->next())
+    {
+        cout << "You are not currently renting the tool with ID " << toolID << "." << endl;
+        return false;
+    }
+    getBorrowRecordStatement->closeResultSet(rs);
+
+    updateBorrowStatusStatement->setInt(1, 0);
+    updateBorrowStatusStatement->setInt(2, toolID);
+    rowsUpdated = updateBorrowStatusStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
+
+    getNumToolsBorrowingStatement->setInt(1, currentUser);
+    rs = getNumToolsBorrowingStatement->executeQuery();
+    if (rs->next())
+    {
+        numToolsBorrowing = rs->getInt(1);
+        
+        updateNumToolsBorrowingStatement->setInt(1, numToolsBorrowing - 1);
+        updateNumToolsBorrowingStatement->setInt(2, currentUser);
+        rowsUpdated = updateNumToolsBorrowingStatement->executeUpdate();
+        if (rowsUpdated != 1)
+        {
+            cerr << "Error: Failed to update record" << endl;
+            return false;
+        }
+    }
+    getNumToolsBorrowingStatement->closeResultSet(rs);
+
+    updateBorrowRecordStatement->setInt(1, toolID);
+    updateBorrowRecordStatement->setInt(2, currentUser);
+    rowsUpdated = updateBorrowRecordStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
+
+    cout << "Tool has been returned." << endl;
+    DB.conn->commit();
     return true;
 }
 
-bool CommuniTools::removeTool()
+void CommuniTools::showToolBorrows() // Done
 {
+    //SELECT toolName, T.toolID, firstName, lastName, rentDate FROM CommunityTools T JOIN BorrowRecords R ON T.toolID = R.toolID JOIN CommunityMembers M ON T.memberID = M.memberID WHERE R.memberID = :1
+    ResultSet *rs;
+    string memberName;
+
+    cout << "You are currently borrowing: " << endl;
+    cout << left << setw(25) << "Tool" << setw(15) << "Tool ID" << setw(25) << "From" << setw(20) << "Rented On" << endl;
+    cout << left << setw(25) << "----" << setw(15) << "-------" << setw(25) << "----" << setw(20) << "--------" << endl;
+
+
+    showCurrentToolBorrowsStatement->setInt(1, currentUser);
+    rs = showCurrentToolBorrowsStatement->executeQuery();
+    while(rs->next())
+    {
+        memberName = rs->getString(3) + " " + rs->getString(4);
+        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getInt(2) << setw(25) << memberName << setw(20) << rs->getString(5) << endl;
+    }
+    showCurrentToolBorrowsStatement->closeResultSet(rs);
+}
+
+bool CommuniTools::unlistTool() 
+{
+    ResultSet *rs;
+    int toolID;
+    int rowsUpdated;
+
+    lineBreak();
+    cinClear();    
+    showUsersTools();
+    lineBreak();
+
+    cout << "Enter the ID of the tool you want to remove: ";
+    cin >> toolID;
+
+    if (cin.fail())
+    {
+        cinClear();
+        cout << "Invalid tool ID." << endl;
+        return false;
+    }
+    else if (!DB.validateID("CommunityTools", toolID))
+    {
+        cout << "Invalid tool ID." << endl;
+        return false;
+    }
+
+    getToolOwnerStatement->setInt(1, toolID);
+    rs = getToolOwnerStatement->executeQuery();
+    rs->next();
+
+    if (rs->getInt(3) != currentUser)
+    {
+        cout << "You do not own this tool." << endl;
+        return false;
+    }
+    getToolOwnerStatement->closeResultSet(rs);
+
+    removeToolFromRecordStatement->setInt(1, toolID);
+    removeToolFromRecordStatement->executeUpdate();
+
+    removeToolStatement->setInt(1, toolID);
+    removeToolStatement->setInt(2, currentUser);
+    rowsUpdated = removeToolStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
+
+    cout << "Tool has been removed successfully." << endl;
+    DB.conn->commit();
     return true;
+}
+
+void CommuniTools::showUsersTools()
+{
+    ResultSet *rs;
+
+    cout << "Your tools: " << endl;
+    cout << left << setw(25) << "Tool" << setw(15) << "Tool ID" << endl;
+    cout << left << setw(25) << "----" << setw(15) << "-------" << endl;
+
+    getOwnedToolsStatement->setInt(1, currentUser);
+    rs = getOwnedToolsStatement->executeQuery();
+    while (rs->next())
+    {
+        cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getInt(2) << endl;
+    }
 }
 
 // --------------------------------------------------------------------

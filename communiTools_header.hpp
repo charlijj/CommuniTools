@@ -32,6 +32,12 @@ class CommuniTools
     string getCommunities;
     Statement *getCommunitiesStatement;
 
+    string getCommunityOfMember;
+    Statement *getCommunityOfMemberStatement;
+
+    string getToolOwner;
+    Statement *getToolOwnerStatement;
+
     string getCategories;
     Statement *getCategoriesStatement;
 
@@ -56,6 +62,12 @@ class CommuniTools
     string showAllTools;
     Statement *showAllToolsStatement;
 
+    string getOwnedTools;
+    Statement *getOwnedToolsStatement;
+
+    string showCurrentToolBorrows;
+    Statement *showCurrentToolBorrowsStatement;
+
     string showAllAvailableTools;
     Statement *showAllAvailableToolsStatement;
 
@@ -71,21 +83,35 @@ class CommuniTools
     string insertBorrowRecord;
     Statement *insertBorrowRecordStatement;
 
+    string updateBorrowRecord;
+    Statement *updateBorrowRecordStatement;
+
+    string getBorrowRecord;
+    Statement *getBorrowRecordStatement;
+
     string insertBorrower;
     Statement *insertBorrowerStatement;
+
+    string removeTool;
+    Statement *removeToolStatement;
+
+    string removeToolFromRecord;
+    Statement *removeToolFromRecordStatement;
 
     int numToIgnore = 256;
     
     void printCommunities();
     void printCategories();
     void showTools();
+    void showUsersTools();
     void showAvailableTools();
+    void showToolBorrows();
     bool verifyLogIn(string user, string pass);
     bool addMember();
     bool addTool();
     bool borrowTool();
     bool returnTool();
-    bool removeTool();
+    bool unlistTool();
     string readPassword();
 
     public:
