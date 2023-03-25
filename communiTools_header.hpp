@@ -62,8 +62,8 @@ class CommuniTools
     string showAllTools;
     Statement *showAllToolsStatement;
 
-    string getOwnedTools;
-    Statement *getOwnedToolsStatement;
+    string showOwnedTools;
+    Statement *showOwnedToolsStatement;
 
     string showCurrentToolBorrows;
     Statement *showCurrentToolBorrowsStatement;
@@ -121,7 +121,7 @@ class CommuniTools
     
     void printMenu();
     bool logIn();
-    void getOption(char cmd);
+    bool getOption(char cmd);
     void lineBreak(){cout<<endl<<endl;};
     void cinClear(){
       cin.clear();
