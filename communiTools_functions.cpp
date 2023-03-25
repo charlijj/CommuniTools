@@ -345,7 +345,7 @@ bool CommuniTools::addMember()
     string password2;
 
     lineBreak();
-
+    
     cout << "Enter the required information for the new member: " << endl;
 
     cout << "Enter member ID of referral member: " << endl;
@@ -433,7 +433,7 @@ bool CommuniTools::addMember()
 
     if (rowsUpdated == 1) // if update was successful, commit changes 
     {
-        cout << "Added member " << firstName << " " << lastName << " with user name: " << username << " successfully.\nYou can not log in as " << username << " with your set password." << endl;
+        cout << "Added member " << firstName << " " << lastName << " with user name: " << username << " successfully.\nYou can now log in as " << username << " with your set password." << endl;
         DB.conn->commit();
         return true;
     }
@@ -538,8 +538,8 @@ void CommuniTools::showTools() // need to close result set
 
     lineBreak();
 
-    cout << left << setw(25) << "Tool" << setw(25) << "Owner" << setw(25) << "Community" << setw(20) << "Borrow Status" << setw(25) << "Condition" << endl;
-    cout << left << setw(25) << "----" << setw(25) << "-----" << setw(25) << "---------" << setw(20) << "-------------" << setw(25) << "---------" << endl;
+    cout << left << setw(25) << "Tool" << setw(25) << "Owner" << setw(25) << "Community" << setw(25) << "Borrow Status" << setw(25) << "Condition" << endl;
+    cout << left << setw(25) << "----" << setw(25) << "-----" << setw(25) << "---------" << setw(25) << "-------------" << setw(25) << "---------" << endl;
 
     while (rs->next())
     {
@@ -551,7 +551,7 @@ void CommuniTools::showTools() // need to close result set
             borrowStatus = "Not available";
         }
 
-        cout << left << setw(25) << rs->getString(1) << setw(25) << memberName << setw(25) << rs->getString(4) << setw(20) << borrowStatus << setw(25) << rs->getString(6) << endl;
+        cout << left << setw(25) << rs->getString(1) << setw(25) << memberName << setw(25) << rs->getString(4) << setw(25) << borrowStatus << setw(25) << rs->getString(6) << endl;
     }
 
     if (all) // close rs of whatever statement was executed
@@ -686,7 +686,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     rs = getToolOwnerStatement->executeQuery();
     rs->next();
     memberName = rs->getString(1) + " " + rs->getString(2);
-    cout << "You are now borrowing " << rs->getString(7) << " from " << memberName << " ID: " << rs->getInt(3) <<  ", you can pick up your tool at " << rs->getString(4) << " and contact them at Email: " << rs->getString(5) " or Phone: " << rs->getString(6) << endl;
+    cout << "You are now borrowing " << rs->getString(7) << " from " << memberName << " ID: " << rs->getInt(3) <<  ", \nyou can pick up your tool at " << rs->getString(4) << " and contact them at Email: " << rs->getString(5) " or Phone: " << rs->getString(6) << endl;
     getToolOwnerStatement->closeResultSet(rs);
 
     DB.conn->commit();

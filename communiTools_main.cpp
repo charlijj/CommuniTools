@@ -42,7 +42,6 @@ int main()
     do
     {
       CT.printMenu();
-      CT.cinClear(); // reset cin failbit and ignore buffer
       cin >> cmd;
       cmd = toupper(cmd);
       if (cmd == 'Q')
