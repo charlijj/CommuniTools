@@ -686,7 +686,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     rs = getToolOwnerStatement->executeQuery();
     rs->next();
     memberName = rs->getString(1) + " " + rs->getString(2);
-    cout << "You are now borrowing " << rs->getString(7) << " from " << memberName << " ID: " << rs->getInt(3) <<  ", \nyou can pick up your tool at " << rs->getString(4) << " and contact them at Email: " << rs->getString(5) " or Phone: " << rs->getString(6) << endl;
+    cout << "You are now borrowing " << rs->getString(7) << " from " << memberName << " ID: " << rs->getInt(3) <<  ", \nyou can pick up your tool at " << rs->getString(4) << " and contact them at Email: " << rs->getString(5) << " or Phone: " << rs->getString(6) << endl;
     getToolOwnerStatement->closeResultSet(rs);
 
     DB.conn->commit();
@@ -744,7 +744,7 @@ bool CommuniTools::returnTool()
 
     getNumToolsBorrowingStatement->setInt(1, currentUser); // get current number of tools user is borrowing
     rs = getNumToolsBorrowingStatement->executeQuery();
-    rs->next()
+    rs->next();
     numToolsBorrowing = rs->getInt(1);
     getNumToolsBorrowingStatement->closeResultSet(rs);
 
