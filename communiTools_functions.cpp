@@ -2,10 +2,28 @@
 #include <iostream>
 #include <termios.h>
 #include <unistd.h>
+#include <cstdlib>
 #include <iomanip>
 #include "communiTools_header.hpp"
 
   using namespace std;
+
+string readPassword()
+// global read password function, used for database and application login.
+{
+    struct termios settings;
+    tcgetattr(STDIN_FILENO, &settings);
+    settings.c_lflag = (settings.c_lflag & ~(ECHO));
+    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+
+    string password = "";
+    getline(cin, password);
+
+    settings.c_lflag = (settings.c_lflag | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
+    return password;
+}
+
 
 // CommuniTools Class Method Implementation ---------------------------
 
@@ -36,13 +54,6 @@ CommuniTools::CommuniTools()
     getToolOwner = "SELECT firstName, lastName, memberID, address, email, phone, toolName FROM CommunityMembers NATURAL JOIN CommunityTools WHERE toolID = :1";
     getToolOwnerStatement = DB.conn->createStatement(getToolOwner);
 
-        /*
-        SELECT toolName, firstName, lastName, comName, borrowStatus, condition
-        FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities
-    */
-    showAllTools = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities";
-    showAllToolsStatement = DB.conn->createStatement(showAllTools);
-
     /*
         SELECT toolName, T.toolID, firstName, lastName, rentDate
         CommunityTools T JOIN BorrowRecords R ON T.toolID = R.toolID JOIN CommunityMembers M ON T.memberID = M.memberID 
@@ -62,11 +73,20 @@ CommuniTools::CommuniTools()
     showAllAvailableToolsStatement = DB.conn->createStatement(showAllAvailableTools);
 
     /*
+        SELECT toolName, firstName, lastName, comName, borrowStatus, condition
+        FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities
+        ORDER BY firstName DESC
+    */
+    showAllTools = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities ORDER BY firstName DESC";
+    showAllToolsStatement = DB.conn->createStatement(showAllTools);
+
+    /*
        SELECT toolName, firstName, lastName, comName, borrowStatus, condition 
        FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities 
        WHERE catID = :1     
+       ORDER BY firstName DESC
     */
-    showAllToolsOfCategory = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1";
+    showAllToolsOfCategory = "SELECT toolName, firstName, lastName, comName, borrowStatus, condition FROM CommunityTools NATURAL JOIN CommunityMembers NATURAL JOIN Communities WHERE catID = :1 ORDER BY firstName DESC";
     showAllToolsOfCategoryStatement = DB.conn->createStatement(showAllToolsOfCategory);
 
     showOwnedTools = "SELECT toolName, toolID FROM CommunityTools WHERE memberID = :1";
@@ -189,7 +209,7 @@ void CommuniTools::printCommunities()
     lineBreak();
 }
 
-void CommuniTools::printCategories() // Done
+void CommuniTools::printCategories() 
 // prints out all of the categories, their ID, and their description.
 // to help users know what each categories ID is.
 {
@@ -212,7 +232,7 @@ void CommuniTools::printCategories() // Done
     lineBreak();
 }
 
-bool CommuniTools::getOption(char cmd) // need to do return
+void CommuniTools::getOption(char cmd)
 // Main method control, called by main and passed the user input
 // calls the method with the corrsponding command and returns its status.
 {
@@ -220,11 +240,17 @@ bool CommuniTools::getOption(char cmd) // need to do return
     {
     case 'N':
         cout << "Adding new user..." << endl;
-        addMember();
+        if (!addMember())
+        {
+            cout << "Failed to add member." << endl;
+        }
         break;
     case 'L':
         cout << "Adding new tool to lend out..." << endl;
-        addTool();
+        if (!addTool())
+        {
+            cout << "Failed to add tool." << endl;
+        }
         break;
     case 'S':
         cout << "Showing all tools..." << endl;
@@ -232,21 +258,29 @@ bool CommuniTools::getOption(char cmd) // need to do return
         break;
     case 'B':
         cout << "Borrowing tool..." << endl;
-        borrowTool();
+        if (!borrowTool())
+        {
+            cout << "Failed to borrow tool." << endl;
+        }
         break;
     case 'R':
         cout << "Returning tool..." << endl;
-        returnTool();
+        if (!returnTool())
+        {
+            cout << "Failed to return tool." << endl;
+        }
         break;
     case 'D':
         cout << "Removing tool from lend list..." << endl;
-        unlistTool();
+        if (!unlistTool())
+        {
+            cout << "Failed to remove tool." << endl;
+        }
         break;
     
     default:
         cout << "Invalid Option, try again" << endl;
-        cin.clear();
-        cin.ignore(numToIgnore, '\n');
+        cinClear();
         break;
     }
 }
@@ -260,6 +294,8 @@ bool CommuniTools::logIn()
     int tries = 3; // number of tries user has to log in
     bool loggedIn = false; // stores the return value of verifyLogIn
 
+    cout << "\nApplication login:" << endl;
+
     do // while user is not logged in and tries is not 0. 
     {
         if (tries == 0)
@@ -268,9 +304,8 @@ bool CommuniTools::logIn()
             return false;
         }
         cout << "Enter user name: ";
-        cin >> username;
-        lineBreak();
-        cinClear();
+        getline(cin, username);
+
         cout << "Enter password: ";
         password = readPassword();
 
@@ -281,6 +316,7 @@ bool CommuniTools::logIn()
             cout << "Invalid user name or password try again." << endl;
             tries--;
             cout << "Number of try's remaining: " << tries << endl;
+            lineBreak();
         }
 
     } while(!loggedIn);
@@ -289,21 +325,6 @@ bool CommuniTools::logIn()
 }
 
 // Private Methods -----------------------------------------------------
-
-string CommuniTools::readPassword()
-{
-    struct termios settings;
-    tcgetattr(STDIN_FILENO, &settings);
-    settings.c_lflag = (settings.c_lflag & ~(ECHO));
-    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
-
-    string password = "";
-    getline(cin, password);
-
-    settings.c_lflag = (settings.c_lflag | ECHO);
-    tcsetattr(STDIN_FILENO, TCSANOW, &settings);
-    return password;
-}
 
 bool CommuniTools::verifyLogIn(string user, string pass)
 // check to see if a community member exists with the passed credentials.
@@ -602,6 +623,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     ResultSet *rs;
     int toolID;
     int numToolsBorrowing = 0;
+    int rowsUpdated;
     string memberName;
 
     lineBreak();
@@ -634,32 +656,19 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     }
     getBorrowStatusStatement->closeResultSet(rs);
 
-    // Validation done -------------------------------------------------
-
-    updateBorrowStatusStatement->setInt(1, 1); // update borrow status of the tool to true 
-    updateBorrowStatusStatement->setInt(2, toolID);
-    int rowsUpdated = updateBorrowStatusStatement->executeUpdate();
-    if (rowsUpdated != 1)
-    {
-        cerr << "Error: Failed to update record" << endl;
-        return false;
-    }
-
-    insertBorrowRecordStatement->setInt(1, currentUser); // insert a borrow record with the current user and the tool
-    insertBorrowRecordStatement->setInt(2, toolID);
-    rowsUpdated = insertBorrowRecordStatement->executeUpdate();
-    if (rowsUpdated != 1)
-    {
-        cerr << "Error: Failed to update record" << endl;
-        return false;
-    }
-
     getNumToolsBorrowingStatement->setInt(1, currentUser); // get the current number of tools being borrowed by the user
     rs = getNumToolsBorrowingStatement->executeQuery();
     if (rs->next()) // the an entry for the current user exists in the Borrowers table
     {
         numToolsBorrowing = rs->getInt(1);
+        if (numToolsBorrowing > 4)
+        {
+            cout << "You are currently borrowing " << numToolsBorrowing << " tools, which is the maximum amount of borrows at one time, return some tools before borrowing more." << endl;
+            return false;
+        }
         
+        // Validation done -------------------------------------------------
+
         updateNumToolsBorrowingStatement->setInt(1, numToolsBorrowing + 1); // increment the number of tools the user is borrowing
         updateNumToolsBorrowingStatement->setInt(2, currentUser);
         rowsUpdated = updateNumToolsBorrowingStatement->executeUpdate();
@@ -681,6 +690,24 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
         }
     }
     getNumToolsBorrowingStatement->closeResultSet(rs);
+
+    updateBorrowStatusStatement->setInt(1, 1); // update borrow status of the tool to true 
+    updateBorrowStatusStatement->setInt(2, toolID);
+    rowsUpdated = updateBorrowStatusStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
+
+    insertBorrowRecordStatement->setInt(1, currentUser); // insert a borrow record with the current user and the tool
+    insertBorrowRecordStatement->setInt(2, toolID);
+    rowsUpdated = insertBorrowRecordStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record" << endl;
+        return false;
+    }
 
     getToolOwnerStatement->setInt(1, toolID); // get the owner of the tool the user is borrowing's information
     rs = getToolOwnerStatement->executeQuery();
@@ -864,26 +891,36 @@ void CommuniTools::showUsersTools()
         cout << left << setw(25) << rs->getString(1) << setw(15) << rs->getInt(2) << endl;
     }
 }
-
 // --------------------------------------------------------------------
 
 // Database Class Method Implementation -------------------------------
 
 // Public -------------------------------------------------------------
 
-Database::Database() // need to setup user and pass setup
+Database::Database()
 // try to connect to database with given user name and password
 {
+    string username;
+    string password;
+
+    cout << "\nDatabase login: " << endl;
+    cout << "Enter user name: ";
+    getline(cin, username);
+
+    cout << "Enter password: ";
+    password = readPassword();
+
     try
     {
         env = Environment::createEnvironment();
-        conn = env->createConnection(userName, password, connectString);
+        conn = env->createConnection(username, password, connectString);
         
-        cout << "---------- Database Connection Successful ----------" << endl<<endl;
+        cout << "\n\n---------- Database Connection Successful ----------" << endl<<endl;
     }
     catch (SQLException &e)
     {
-        cout << e.what();
+        cout << endl <<endl << e.what() << endl;
+        exit(EXIT_FAILURE);
     }
 };
 

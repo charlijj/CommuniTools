@@ -35,6 +35,7 @@ int main()
   bool quit = false; // runs while not quit
   bool fail = false; // gets return of get option
   char cmd; // user command variable
+
   CommuniTools CT; // Initializing an application object as CT.
 
   if (CT.logIn()) 
@@ -48,7 +49,7 @@ int main()
       {
         CT.lineBreak();
         cout << "Quitting... Bye!" << endl;
-        return 1;
+        return 0;
       }
       CT.lineBreak();
       CT.getOption(cmd); // getOption is the main method caller, its calls the method associated with the users command
@@ -57,5 +58,5 @@ int main()
 
   }
 
-  return 0;
+  return 1;
 }

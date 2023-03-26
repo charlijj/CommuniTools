@@ -4,12 +4,12 @@
   using namespace std;
   using namespace oracle::occi;
 
+string readPassword();
+
 class Database {
 
     private:
 
-    string userName = "";
-    string password = "";
     string connectString =  "sunfire.csci.viu.ca";
 
     public:
@@ -120,7 +120,6 @@ class CommuniTools
     bool borrowTool();
     bool returnTool();
     bool unlistTool();
-    string readPassword();
 
     public:
 
@@ -129,7 +128,7 @@ class CommuniTools
     
     void printMenu();
     bool logIn();
-    bool getOption(char cmd);
+    void getOption(char cmd);
     void lineBreak(){cout<<endl<<endl;};
     void cinClear(){
       cin.clear();
