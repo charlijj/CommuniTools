@@ -3,3 +3,5 @@ communiTools_functions.o
 communiTools.o
 
 communiToolsx
+
+sql/

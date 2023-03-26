@@ -8,8 +8,8 @@ class Database {
 
     private:
 
-    string userName = "charlijj";
-    string password = "%Magnolia50";
+    string userName = "";
+    string password = "";
     string connectString =  "sunfire.csci.viu.ca";
 
     public:
