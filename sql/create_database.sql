@@ -144,7 +144,6 @@ BEGIN
 END;
 /
 
-
 -- describe Communities;
 -- describe CommunityMembers;
 -- describe Borrowers;

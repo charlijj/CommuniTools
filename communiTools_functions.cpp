@@ -165,7 +165,7 @@ void CommuniTools::printMenu()
     cout << "B: to borrow a tool." << endl;
     cout << "R: to return a tool." << endl;
     cout << "D: to remove a tool from lend out." << endl;
-    cout << "Q: to quit program." << endl;
+    cout << "Q: to exit CommuniTools." << endl;
 }
 
 void CommuniTools::printCommunities()

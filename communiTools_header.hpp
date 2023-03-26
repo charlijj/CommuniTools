@@ -29,41 +29,25 @@ class CommuniTools
 
     Database DB;
 
+    // Select querys  -----------------------------
+
     string getCommunities;
     Statement *getCommunitiesStatement;
-
-    string getCommunityOfMember;
-    Statement *getCommunityOfMemberStatement;
-
-    string getToolOwner;
-    Statement *getToolOwnerStatement;
-
-    string getCategories;
-    Statement *getCategoriesStatement;
-
-    string getMemberByName;
-    Statement *getMemberByNameStatement;
-
-    string getBorrowStatus;
-    Statement *getBorrowStatusStatement;
-
-    string getNumToolsBorrowing;
-    Statement *getNumToolsBorrowingStatement;
-
-    string updateNumToolsBorrowing;
-    Statement *updateNumToolsBorrowingStatement;
-
-    string updateBorrowStatus;
-    Statement *updateBorrowStatusStatement;
 
     string validateLogin;
     Statement *validateLoginStatement;
 
+    string getCommunityOfMember;
+    Statement *getCommunityOfMemberStatement;
+
+    string getMemberByName;
+    Statement *getMemberByNameStatement;
+
+    string getToolOwner;
+    Statement *getToolOwnerStatement;
+
     string showAllTools;
     Statement *showAllToolsStatement;
-
-    string showOwnedTools;
-    Statement *showOwnedToolsStatement;
 
     string showCurrentToolBorrows;
     Statement *showCurrentToolBorrowsStatement;
@@ -74,6 +58,34 @@ class CommuniTools
     string showAllToolsOfCategory;
     Statement *showAllToolsOfCategoryStatement;
 
+    string showOwnedTools;
+    Statement *showOwnedToolsStatement;
+
+    string getCategories;
+    Statement *getCategoriesStatement;
+
+    string getBorrowStatus;
+    Statement *getBorrowStatusStatement;
+
+    string getNumToolsBorrowing;
+    Statement *getNumToolsBorrowingStatement;
+
+      string getBorrowRecord;
+    Statement *getBorrowRecordStatement;
+
+    // Update querys -----------------------------
+
+    string updateNumToolsBorrowing;
+    Statement *updateNumToolsBorrowingStatement;
+
+    string updateBorrowStatus;
+    Statement *updateBorrowStatusStatement;
+
+    string updateBorrowRecord;
+    Statement *updateBorrowRecordStatement;
+
+    // Insert querys -----------------------------
+
     string insertNewMember;
     Statement *insertNewMemberStatement;
 
@@ -83,14 +95,10 @@ class CommuniTools
     string insertBorrowRecord;
     Statement *insertBorrowRecordStatement;
 
-    string updateBorrowRecord;
-    Statement *updateBorrowRecordStatement;
-
-    string getBorrowRecord;
-    Statement *getBorrowRecordStatement;
-
     string insertBorrower;
     Statement *insertBorrowerStatement;
+
+    // Remove querys ------------------------------
 
     string removeTool;
     Statement *removeToolStatement;

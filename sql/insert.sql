@@ -88,8 +88,6 @@ VALUES (4, 'Agent', 'Lary', '104 Matrix Lane, The Matrix', 'smith@thematrix.com'
 
 INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
 VALUES (4, 'Agent', 'David', '104 Matrix Lane, The Matrix', 'smith@thematrix.com', '555-3456', 'TheEnemy5', 'IHateNeo5');
-
-
 -----------------------------------------------------------------------------
 -- Insert Categories --------------------------------------------------------
 
