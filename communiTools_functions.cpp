@@ -9,7 +9,8 @@
   using namespace std;
 
 string readPassword()
-// global read password function, used for database and application login.
+// global read password function, used for database and application login,
+// turns off terminal text print so user can enter password without displaying it on screen. 
 {
     struct termios settings;
     tcgetattr(STDIN_FILENO, &settings);
@@ -24,13 +25,12 @@ string readPassword()
     return password;
 }
 
-
 // CommuniTools Class Method Implementation ---------------------------
 
 // Public Methods ------------------------------------------------------
 
 CommuniTools::CommuniTools()
-// create all statements that are used in the methods of CommuniTools
+// create all statements that are used in the methods of CommuniTools.
 {
     // Select for value querys: -----------------------------------------------------------
 
@@ -210,7 +210,7 @@ void CommuniTools::printCommunities()
 }
 
 void CommuniTools::printCategories() 
-// prints out all of the categories, their ID, and their description.
+// prints out all of the categories, their ID, and their description,
 // to help users know what each categories ID is.
 {
     string statement;
@@ -233,7 +233,7 @@ void CommuniTools::printCategories()
 }
 
 void CommuniTools::getOption(char cmd)
-// Main method control, called by main and passed the user input
+// Main method control, called by main and passed the user input,
 // calls the method with the corrsponding command and returns its status.
 {
     switch (cmd)
@@ -348,7 +348,7 @@ bool CommuniTools::verifyLogIn(string user, string pass)
 }
 
 bool CommuniTools::addMember()
-// collects and validates user input to create a new community member in the system
+// collects and validates user input to create a new community member in the system,
 // includes input of a referral member ID, the users community, first and last name, address, email, and phone number and be able to log in as that user,
 // if everything is valid the new member is commited to the database.
 {
@@ -466,7 +466,7 @@ bool CommuniTools::addMember()
 }
 
 bool CommuniTools::addTool()
-// collects and validates user input to create a new tool in the system
+// collects and validates user input to create a new tool in the system,
 // includes input of the category of the tool, the tool name, and the condition of the tool,
 // if everything is valid the tool is comitted to the database.
 {
@@ -518,9 +518,9 @@ bool CommuniTools::addTool()
     }
 }
 
-void CommuniTools::showTools() // need to close result set
+void CommuniTools::showTools()
 // shows all tools listed in the database,
-// user can list the tools in a given community or list all tools by entering 0
+// user can list the tools in a given community or list all tools by entering 0.
 {
     ResultSet *rs;
 
@@ -588,9 +588,9 @@ void CommuniTools::showTools() // need to close result set
 }
 
 void CommuniTools::showAvailableTools()
-// shows all tools the user is allowed to borrow
+// shows all tools the user is allowed to borrow,
 // this includes tools that are owned by a member of the same community,
-// and tools that are not already being rented
+// and tools that are not already being rented.
 {
     ResultSet *rs;
     string memberName;
@@ -617,8 +617,8 @@ void CommuniTools::showAvailableTools()
     showAllAvailableToolsStatement->closeResultSet(rs);
 }
 
-bool CommuniTools::borrowTool() // need to validate community ID, add number of borrows function
-// user can borrow a available tool by entering the ID of the tool they want to borrow
+bool CommuniTools::borrowTool() // need to validate community ID, add number of borrows function,
+// user can borrow a available tool by entering the ID of the tool they want to borrow.
 {
     ResultSet *rs;
     int toolID;
@@ -721,7 +721,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
 }
 
 bool CommuniTools::returnTool()
-// user can return tool they are currently borrowing by entering the ID of the tool
+// user can return tool they are currently borrowing by entering the ID of the tool.
 {
     ResultSet *rs;
     int toolID;
@@ -784,7 +784,7 @@ bool CommuniTools::returnTool()
 }
 
 void CommuniTools::showToolBorrows() 
-// shows all tools that are currently being borrowed by the user
+// shows all tools that are currently being borrowed by the user.
 {
     ResultSet *rs;
     string memberName;
@@ -804,8 +804,8 @@ void CommuniTools::showToolBorrows()
 }
 
 bool CommuniTools::unlistTool() 
-// remove tool from database
-// other users can no longer see or rent the tool
+// remove tool from database,
+// other users can no longer see or rent the tool.
 {
     ResultSet *rs;
     int toolID;
@@ -861,7 +861,7 @@ bool CommuniTools::unlistTool()
 }
 
 void CommuniTools::showUsersTools()
-// shows all tools the current user owns and is lending out
+// shows all tools the current user owns and is lending out.
 {
     ResultSet *rs;
 
@@ -880,10 +880,8 @@ void CommuniTools::showUsersTools()
 
 // Database Class Method Implementation -------------------------------
 
-// Public -------------------------------------------------------------
-
 Database::Database()
-// try to connect to database with given user name and password
+// try to connect to database with given user name and password.
 {
     string username;
     string password;
@@ -910,7 +908,7 @@ Database::Database()
 };
 
 Database::~Database()
-// terminate database connection
+// terminate database connection.
 {
     env->terminateConnection(conn);
     Environment::terminateEnvironment(env);
@@ -918,7 +916,7 @@ Database::~Database()
 
 bool Database::validateID(string table, int ID)
 // validate a given ID with a given table,
-// return true is valid, else false
+// return true is valid, else false.
 {
     int numTuples;
     ResultSet *rs;

@@ -4,9 +4,12 @@
   using namespace std;
   using namespace oracle::occi;
 
-string readPassword();
+
+// global read password function, used for database and application login,
+string readPassword(); 
 
 class Database {
+// Handles the connection to oracle database
 
     private:
 
@@ -21,13 +24,14 @@ class Database {
     bool validateID(string table, int ID);
 };
 
-class CommuniTools
-{
+class CommuniTools {
+// Handles all application functionalities 
+
     private:
 
-    int currentUser;
+    int currentUser; // memberID of current logged in user
 
-    Database DB;
+    Database DB; // database connection
 
     // Select querys  -----------------------------
 
@@ -106,7 +110,7 @@ class CommuniTools
     string removeToolFromRecord;
     Statement *removeToolFromRecordStatement;
 
-    int numToIgnore = 256;
+    int numToIgnore = 256; // number of character to clear from buffer with cin.ignore()
     
     void printCommunities();
     void printCategories();
@@ -135,7 +139,3 @@ class CommuniTools
       cin.ignore(numToIgnore, '\n');
     };
 };
-
-
-
-

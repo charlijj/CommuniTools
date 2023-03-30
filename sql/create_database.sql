@@ -1,9 +1,13 @@
--- -- Communities (comID, comName, comLocation, comSize)
--- -- CommunityMembers (memberID, comID, memberName, address, email, phone)
--- -- Borrowers (memberID, numToolsBorrowing
--- -- Categories (catID, catName, catDescription)
--- -- Tools (toolID, catID, memberID, toolName, borrowStatus, condition
--- -- BorrowRecords (recordID, memberID, toolID, rentDate, returnDate)
+-- Schema --------------------------------------------------------------
+
+-- Communities (comID, comName, comLocation, comSize)
+-- CommunityMembers (memberID, comID, memberName, address, email, phone)
+-- Borrowers (memberID, numToolsBorrowing
+-- Categories (catID, catName, catDescription)
+-- Tools (toolID, catID, memberID, toolName, borrowStatus, condition
+-- BorrowRecords (recordID, memberID, toolID, rentDate, returnDate)
+
+-------------------------------------------------------------------------
 
 DROP TRIGGER trg_Communities;
 DROP SEQUENCE comID_seq;
