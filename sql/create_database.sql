@@ -44,10 +44,10 @@ CREATE TABLE CommunityMembers (
     firstName VARCHAR(256),
     lastName VARCHAR(256),
     address VARCHAR(256),
-    email VARCHAR(256),
+    email VARCHAR(64),
     phone VARCHAR(15),
-    username VARCHAR(256),
-    password VARCHAR(256)
+    username VARCHAR(32),
+    password VARCHAR(32)
 );
 
 CREATE TABLE Borrowers (
@@ -58,7 +58,7 @@ CREATE TABLE Borrowers (
 CREATE TABLE ToolCategories (
     catID NUMBER(5) PRIMARY KEY,
     catName VARCHAR(256),
-    catDescription VARCHAR(256)
+    catDescription VARCHAR(512)
 );
 
 CREATE TABLE CommunityTools (
@@ -67,7 +67,7 @@ CREATE TABLE CommunityTools (
     memberID NUMBER(5) REFERENCES CommunityMembers,
     toolName VARCHAR(256),
     borrowStatus NUMBER(1, 0) DEFAULT 0,
-    condition VARCHAR(256)
+    condition VARCHAR(64)
 );
 
 CREATE TABLE BorrowRecords (
@@ -78,12 +78,11 @@ CREATE TABLE BorrowRecords (
     returnDate DATE
 );
 
--- Create sequence to generate IDs for Communities table
+
 CREATE SEQUENCE comID_seq
   START WITH 1
   INCREMENT BY 1;
 
--- Create trigger to generate IDs for Communities table
 CREATE OR REPLACE TRIGGER trg_Communities
 BEFORE INSERT ON Communities
 FOR EACH ROW
@@ -92,12 +91,11 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for CommunityMembers table
+
 CREATE SEQUENCE memberID_seq
   START WITH 1
   INCREMENT BY 1;
 
--- Create trigger to generate IDs for CommunityMembers table
 CREATE OR REPLACE TRIGGER trg_CommunityMembers
 BEFORE INSERT ON CommunityMembers
 FOR EACH ROW
@@ -106,12 +104,11 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for ToolCategories table
+
 CREATE SEQUENCE catID_seq
   START WITH 1
   INCREMENT BY 1;
 
--- Create trigger to generate IDs for ToolCategories table
 CREATE OR REPLACE TRIGGER trg_ToolCategories
 BEFORE INSERT ON ToolCategories
 FOR EACH ROW
@@ -120,12 +117,11 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for CommunityTools table
+
 CREATE SEQUENCE toolID_seq
   START WITH 1
   INCREMENT BY 1;
 
--- Create trigger to generate IDs for CommunityTools table
 CREATE OR REPLACE TRIGGER trg_CommunityTools
 BEFORE INSERT ON CommunityTools
 FOR EACH ROW
@@ -134,12 +130,10 @@ BEGIN
 END;
 /
 
--- Create sequence to generate IDs for BorrowRecords table
 CREATE SEQUENCE recordID_seq
   START WITH 1
   INCREMENT BY 1;
 
--- Create trigger to generate IDs for BorrowRecords table
 CREATE OR REPLACE TRIGGER trg_BorrowRecords
 BEFORE INSERT ON BorrowRecords
 FOR EACH ROW
