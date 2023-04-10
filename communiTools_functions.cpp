@@ -315,7 +315,7 @@ bool CommuniTools::logIn()
         {
             cout << "Invalid user name or password try again." << endl;
             tries--;
-            cout << "Number of try's remaining: " << tries << endl;
+            cout << "Number of tries remaining: " << tries << endl;
             lineBreak();
         }
 
