@@ -303,7 +303,7 @@ bool CommuniTools::logIn()
             cout << "Out of login attempts, quitting program..." << endl;
             return false;
         }
-        cout << "Enter user name: ";
+        cout << "Enter username: ";
         getline(cin, username);
 
         cout << "Enter password: ";
@@ -313,7 +313,7 @@ bool CommuniTools::logIn()
 
         if (!loggedIn)
         {
-            cout << "Invalid user name or password try again." << endl;
+            cout << "Invalid username or password try again." << endl;
             tries--;
             cout << "Number of tries remaining: " << tries << endl;
             lineBreak();
@@ -343,7 +343,7 @@ bool CommuniTools::verifyLogIn(string user, string pass)
     currentUser = rs->getInt(1); // sets CommuniTools private currentUser to the logged in users memberID 
     validateLoginStatement->closeResultSet(rs);
 
-    cout << "----------------- Log In Successful -----------------" << endl;
+    cout << "------------------ Login Successful ------------------" << endl;
     return true;
 }
 
@@ -375,13 +375,13 @@ bool CommuniTools::addMember()
     if (cin.fail()) // Validate that the user has a valid referral member
     {
         cinClear();
-        cout << "No member with ID " << referralMember << " exists." << endl;
+        cout << "Invalid member ID." << endl;
         return false;
     }
     else if (!DB.validateID("CommunityMembers", referralMember)) 
     {
         cinClear();
-        cout << "No member with ID " << referralMember << " exists." << endl;
+        cout << "Invalid member ID." << endl;
         return false;
     }
     
@@ -881,13 +881,13 @@ void CommuniTools::showUsersTools()
 // Database Class Method Implementation -------------------------------
 
 Database::Database()
-// try to connect to database with given user name and password.
+// try to connect to database with given username and password.
 {
     string username;
     string password;
 
     cout << "\nDatabase login: " << endl;
-    cout << "Enter user name: ";
+    cout << "Enter username: ";
     getline(cin, username);
 
     cout << "Enter password: ";
