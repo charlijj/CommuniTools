@@ -1,3 +1,6 @@
+// By: Jasper Charlinski
+// CommuniTools and Database Class Method Implementation 
+
 #include <iostream>
 #include <iostream>
 #include <termios.h>

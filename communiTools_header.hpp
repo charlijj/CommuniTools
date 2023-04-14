@@ -1,3 +1,6 @@
+// By: Jasper Charlinski
+// CommuniTools and Database Class Definitions 
+
 #include <iostream>
 #include <occi.h> // Oracle's C++ call level interface library package
 

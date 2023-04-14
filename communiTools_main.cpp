@@ -1,4 +1,5 @@
-// CommuniTool Main Controller
+// By: Jasper Charlinski
+// CommuniTools Main Controller
 
 /*
 CommunuiTools is a tool-sharing application that aims to facilitate the sharing of tools among members of a community. 
@@ -20,8 +21,6 @@ The full feature list is:
   - return a tool that the user is currently borrowing.
 
   - remove a tool from the database, stop lending.
-
-  - to quit program.
 
 */
 
