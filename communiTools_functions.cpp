@@ -279,7 +279,7 @@ void CommuniTools::getOption(char cmd)
         break;
     
     default:
-        cout << "Invalid Option, try again" << endl;
+        cout << "Invalid Option, try again." << endl;
         cinClear();
         break;
     }
@@ -460,7 +460,7 @@ bool CommuniTools::addMember()
     }
     else // if no rows were updated, no new member was added
     {
-        cerr << "Error: Failed to update record" << endl;
+        cerr << "Error: Failed to update record." << endl;
         return false;
     }
 }
@@ -513,7 +513,7 @@ bool CommuniTools::addTool()
     }
     else
     {
-        cerr << "Error: Failed to update record" << endl;
+        cerr << "Error: Failed to update record." << endl;
         return false;
     }
 }
@@ -537,7 +537,7 @@ void CommuniTools::showTools()
     if (cin.fail()) // validate user has entered a option
     {
         cinClear();
-        cout << "Invalid tool category ID." << endl;
+        cout << "Invalid option." << endl;
         return;
     }
     else if (catID == 0) // if user entered 0, show all tools
@@ -547,7 +547,7 @@ void CommuniTools::showTools()
     }
     else if (!DB.validateID("ToolCategories", catID)) // validate user has entered a valid category ID
     {
-        cout << "Invalid tool category." << endl;
+        cout << "Invalid option." << endl;
         return;
     }
     else // show tools of selected category
@@ -623,6 +623,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     ResultSet *rs;
     int toolID;
     int numToolsBorrowing = 0;
+    int maxToolsBorrowing = 5;
     int rowsUpdated;
     string memberName;
 
@@ -661,7 +662,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     if (rs->next()) // the an entry for the current user exists in the Borrowers table
     {
         numToolsBorrowing = rs->getInt(1);
-        if (numToolsBorrowing > 4)
+        if (numToolsBorrowing >= maxToolsBorrowing)
         {
             cout << "You are currently borrowing " << numToolsBorrowing << " tools, which is the maximum amount of borrows at one time, return some tools before borrowing more." << endl;
             return false;
@@ -674,7 +675,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
         rowsUpdated = updateNumToolsBorrowingStatement->executeUpdate();
         if (rowsUpdated != 1)
         {
-            cerr << "Error: Failed to update record" << endl;
+            cerr << "Error: Failed to update record." << endl;
             return false;
         }
     }
@@ -685,7 +686,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
         rowsUpdated = insertBorrowerStatement->executeUpdate();
         if (rowsUpdated != 1)
         {
-            cerr << "Error: Failed to update record" << endl;
+            cerr << "Error: Failed to update record." << endl;
             return false;
         }
     }
@@ -696,7 +697,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     rowsUpdated = updateBorrowStatusStatement->executeUpdate();
     if (rowsUpdated != 1)
     {
-        cerr << "Error: Failed to update record" << endl;
+        cerr << "Error: Failed to update record." << endl;
         return false;
     }
 
@@ -705,7 +706,7 @@ bool CommuniTools::borrowTool() // need to validate community ID, add number of 
     rowsUpdated = insertBorrowRecordStatement->executeUpdate();
     if (rowsUpdated != 1)
     {
-        cerr << "Error: Failed to update record" << endl;
+        cerr << "Error: Failed to update record." << endl;
         return false;
     }
 
@@ -759,6 +760,7 @@ bool CommuniTools::returnTool()
     getBorrowRecordStatement->closeResultSet(rs);
 
     // Validation done -------------------------------------------------
+    // This code just assumes the queries are being executed successfully
 
     updateBorrowStatusStatement->setInt(1, 0); // update borrow status to false
     updateBorrowStatusStatement->setInt(2, toolID);
@@ -851,7 +853,7 @@ bool CommuniTools::unlistTool()
     rowsUpdated = removeToolStatement->executeUpdate();
     if (rowsUpdated != 1)
     {
-        cerr << "Error: Failed to update record" << endl;
+        cerr << "Error: Failed to update record." << endl;
         return false;
     }
 

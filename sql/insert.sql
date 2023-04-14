@@ -15,7 +15,7 @@ INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone,
 VALUES (1, 'User', 'Test', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222', 'user', 'pass');
 
 INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password) 
-VALUES (1, 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222', 'CharJ', 'BigStinky');
+VALUES (1, 'Jasper', 'Char', '788 Street St, Nanaimo BC', 'mail@mail.com', '250-111-2222', 'CharJ', 'repsaj');
 
 INSERT INTO CommunityMembers (comID, firstName, lastName, address, email, phone, username, password)
 VALUES (1, 'Anakin', 'Skywalker', '1234 Tatooine Ave, Mos Espa', 'anakin@jediorder.com', '555-1234', 'SkywalkerA', 'TheChosenOne');
