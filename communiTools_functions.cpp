@@ -213,8 +213,6 @@ void CommuniTools::printCategories()
 // prints out all of the categories, their ID, and their description,
 // to help users know what each categories ID is.
 {
-    string statement;
-    Statement *stmt;
     ResultSet *rs;
 
     cout << left << setw(25) << "Category" << setw(15) << "Category ID" << setw(50) << "Category Description" << endl;
@@ -760,11 +758,15 @@ bool CommuniTools::returnTool()
     getBorrowRecordStatement->closeResultSet(rs);
 
     // Validation done -------------------------------------------------
-    // This code just assumes the queries are being executed successfully
 
     updateBorrowStatusStatement->setInt(1, 0); // update borrow status to false
     updateBorrowStatusStatement->setInt(2, toolID);
     rowsUpdated = updateBorrowStatusStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record." << endl;
+        return false;
+    }
 
     getNumToolsBorrowingStatement->setInt(1, currentUser); // get current number of tools user is borrowing
     rs = getNumToolsBorrowingStatement->executeQuery();
@@ -775,10 +777,20 @@ bool CommuniTools::returnTool()
     updateNumToolsBorrowingStatement->setInt(1, numToolsBorrowing - 1); // decrement the number of tools the user is borrowing
     updateNumToolsBorrowingStatement->setInt(2, currentUser);
     rowsUpdated = updateNumToolsBorrowingStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record." << endl;
+        return false;
+    }
 
     updateBorrowRecordStatement->setInt(1, toolID); // update the return date of the borrow record
     updateBorrowRecordStatement->setInt(2, currentUser);
     rowsUpdated = updateBorrowRecordStatement->executeUpdate();
+    if (rowsUpdated != 1)
+    {
+        cerr << "Error: Failed to update record." << endl;
+        return false;
+    }
 
     cout << "Tool has been returned." << endl;
     DB.conn->commit();

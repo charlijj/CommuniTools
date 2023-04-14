@@ -33,7 +33,6 @@ The full feature list is:
 int main()
 {
   bool quit = false; // runs while not quit
-  bool fail = false; // gets return of get option
   char cmd; // user command variable
 
   CommuniTools CT; // Initializing an application object as CT.

@@ -182,7 +182,6 @@ INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (4, 18, 'Woodworking Clamps', 0, 'Fair condition');
 
 -- Automotive Tools
-
 INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (5, 3, 'Pipe Wrench', 0, 'Like new');
 
@@ -196,7 +195,6 @@ INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (5, 11, 'Jump Starter', 0, 'Fair condition');
 
 -- Construction Tools
-
 INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (6, 2, 'Circular Saw', 0, 'Excellent condition');
 
@@ -210,7 +208,6 @@ INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (7, 18, 'Sawzall', 0, 'Fair condition');
 
 -- Cleaning Tools
-
 INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (8, 7, 'Vacuum Cleaner', 0, 'Like new');
 
@@ -218,7 +215,6 @@ INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (8, 15, 'Broom', 0, 'Good condition');
 
 -- Electrical Tools
-
 INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (9, 1, 'Wire stripper', 0, 'Good condition');
 
@@ -232,7 +228,6 @@ INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (9, 3, 'Multimeter', 0, 'Good condition');
 
 -- Painting Tools
-
 INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (10, 4, 'Paint brush set', 0, 'New');
 
@@ -241,37 +236,6 @@ VALUES (10, 5, 'Roller set', 0, 'Good condition');
 
 INSERT INTO CommunityTools (catID, memberID, toolName, borrowStatus, condition)
 VALUES (10, 6, 'Paint sprayer', 0, 'Good condition');
------------------------------------------------------------------------------
--- Insert records -----------------------------------------------------------
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (16, 12, TO_DATE('2022-02-03', 'YYYY-MM-DD'), TO_DATE('2022-02-13', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 12;
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (7, 18, TO_DATE('2022-03-17', 'YYYY-MM-DD'), TO_DATE('2022-03-24', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 18;
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (13, 5, TO_DATE('2022-04-06', 'YYYY-MM-DD'), TO_DATE('2022-04-16', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 5;
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (3, 19, TO_DATE('2022-05-12', 'YYYY-MM-DD'), TO_DATE('2022-05-22', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 19;
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (9, 1, TO_DATE('2022-06-01', 'YYYY-MM-DD'), TO_DATE('2022-06-08', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 1;
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (15, 16, TO_DATE('2022-07-05', 'YYYY-MM-DD'), TO_DATE('2022-07-12', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 16;
-
-INSERT INTO BorrowRecords (memberID, toolID, rentDate, returnDate)
-VALUES (1, 3, TO_DATE('2022-08-11', 'YYYY-MM-DD'), TO_DATE('2022-08-21', 'YYYY-MM-DD'));
-UPDATE CommunityTools SET borrowStatus = 1 WHERE toolID = 3;
-
 -----------------------------------------------------------------------------
 
 commit;
