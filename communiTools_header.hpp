@@ -16,7 +16,7 @@ class Database {
 
     private:
 
-    string connectString =  "sunfire.csci.viu.ca";
+    string connectString =  "";
 
     public:
 
